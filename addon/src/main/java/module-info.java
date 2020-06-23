@@ -6,10 +6,10 @@
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
@@ -20,9 +20,9 @@ module com.vaadin.addon.charts {
     requires java.logging;
     requires gentyref;
     requires gwt.user;
-    requires jackson.core;
-    requires jackson.databind;
-    requires jackson.annotations;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.annotation;
     requires jsoup;
     requires vaadin.client;
     requires vaadin.server;
