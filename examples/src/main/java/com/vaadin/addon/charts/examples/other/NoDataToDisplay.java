@@ -1,6 +1,5 @@
 package com.vaadin.addon.charts.examples.other;
 
-
 /*
  * #%L
  * Vaadin Charts
@@ -27,14 +26,13 @@ import com.vaadin.ui.Component;
 @SkipFromDemo
 public class NoDataToDisplay extends AbstractVaadinChartExample {
 
-    @Override
-    public String getDescription() {
-        return "Test with No data displayed.";
-    }
+  @Override
+  public String getDescription() {
+    return "Test with No data displayed.";
+  }
 
-    @Override
-    protected Component getChart() {
-        return new Chart(ChartType.COLUMN);
-    }
-
+  @Override
+  protected Component getChart() {
+    return new Chart(ChartType.COLUMN);
+  }
 }

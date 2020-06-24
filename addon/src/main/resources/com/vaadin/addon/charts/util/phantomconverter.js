@@ -1,11 +1,11 @@
 /**
  * @license Highcharts JS v2.3.3 (2012-11-02)
- * 
+ *
  * (c) 2009-2011 Gert Vaartjes
- * 
+ *
  * License: www.highcharts.com/license
- * 
- * 
+ *
+ *
  * Modified 1/2013 at Vaadin Ltd - Adapted to fit better for usage in Vaadin
  * Charts. Uses server so that phantomjs instances can be recycled. Also now no need
  * to use temp files.
@@ -13,309 +13,309 @@
 
 /* get the arguments from the commandline and map them */
 
-var system = require('system');
-args = {};
-for ( var i = 0; i < system.args.length; i += 1) {
-	if (system.args[i].charAt(0) === '-') {
-		args[system.args[i].substr(1, i.length)] = system.args[i + 1];
-	}
+var system = require('system')
+args = {}
+for (var i = 0; i < system.args.length; i += 1) {
+  if (system.args[i].charAt(0) === '-') {
+    args[system.args[i].substr(1, i.length)] = system.args[i + 1]
+  }
 }
 
-var fs = require('fs');
+var fs = require('fs')
 
-function render(configstr, themeStr, langStr, width, height, timeline) {
+function render (configstr, themeStr, langStr, width, height, timeline) {
 
-	var page = require('webpage').create(), HC = {}, pick, scaleAndClipPage, input, constr, callback, callbackStr, optionsStr, output, outputExtension, pdfOutput, svg, svgFile, svgElem, timer;
+  var page = require('webpage').create(), HC = {}, pick, scaleAndClipPage, input, constr, callback, callbackStr,
+    optionsStr, output, outputExtension, pdfOutput, svg, svgFile, svgElem, timer
 
-	HC.imagesLoaded = 'Highcharts.imagesLoaded:7a7dfcb5df73aaa51e67c9f38c5b07cb';
-	window.imagesLoaded = false;
+  HC.imagesLoaded = 'Highcharts.imagesLoaded:7a7dfcb5df73aaa51e67c9f38c5b07cb'
+  window.imagesLoaded = false
 
-	page.onConsoleMessage = function(msg) {
-		console.log(msg);
-		/*
-		 * Ugly hack, but only way to get messages out of the 'page.evaluate()'
-		 * sandbox. If any, please contribute with improvements on this!
-		 */
-		if (msg === HC.imagesLoaded) {
-			window.imagesLoaded = true;
-		}
-	};
+  page.onConsoleMessage = function (msg) {
+    console.log(msg)
+    /*
+     * Ugly hack, but only way to get messages out of the 'page.evaluate()'
+     * sandbox. If any, please contribute with improvements on this!
+     */
+    if (msg === HC.imagesLoaded) {
+      window.imagesLoaded = true
+    }
+  }
 
-	page.onAlert = function(msg) {
-		console.log(msg);
-	};
+  page.onAlert = function (msg) {
+    console.log(msg)
+  }
 
-	pick = function() {
-		var args = arguments, i, arg, length = args.length;
-		for (i = 0; i < length; i += 1) {
-			arg = args[i];
-			if (arg !== undefined && arg !== null && arg !== 'null'
-					&& arg != '0') {
-				return arg;
-			}
-		}
-	};
+  pick = function () {
+    var args = arguments, i, arg, length = args.length
+    for (i = 0; i < length; i += 1) {
+      arg = args[i]
+      if (arg !== undefined && arg !== null && arg !== 'null'
+        && arg != '0') {
+        return arg
+      }
+    }
+  }
 
-	/* scale and clip the page */
-	scaleAndClipPage = function(svg, pdf) {
-		/*
-		 * param: svg: The scg configuration object param: pdf: boolean, if true
-		 * set papersize
-		 */
+  /* scale and clip the page */
+  scaleAndClipPage = function (svg, pdf) {
+    /*
+     * param: svg: The scg configuration object param: pdf: boolean, if true
+     * set papersize
+     */
 
-		var zoom = 1, pageWidth = pick(args.width, svg.width), clipwidth, clipheight;
+    var zoom = 1, pageWidth = pick(args.width, svg.width), clipwidth, clipheight
 
-		if (parseInt(pageWidth, 10) == pageWidth) {
-			zoom = pageWidth / svg.width;
-		}
+    if (parseInt(pageWidth, 10) == pageWidth) {
+      zoom = pageWidth / svg.width
+    }
 
-		/*
-		 * set this line when scale factor has a higher precedence scale has
-		 * precedence : page.zoomFactor = args.scale ? zoom * args.scale : zoom;
-		 */
+    /*
+     * set this line when scale factor has a higher precedence scale has
+     * precedence : page.zoomFactor = args.scale ? zoom * args.scale : zoom;
+     */
 
-		/*
-		 * args.width has a higher precedence over scaling, to not break
-		 * backover compatibility
-		 */
-		page.zoomFactor = args.scale && args.width == undefined ? zoom
-				* args.scale : zoom;
+    /*
+     * args.width has a higher precedence over scaling, to not break
+     * backover compatibility
+     */
+    page.zoomFactor = args.scale && args.width == undefined ? zoom
+      * args.scale : zoom
 
-		clipwidth = svg.width * page.zoomFactor;
-		clipheight = svg.height * page.zoomFactor;
+    clipwidth = svg.width * page.zoomFactor
+    clipheight = svg.height * page.zoomFactor
 
-		/* define the clip-rectangle */
-		page.clipRect = {
-			top : 0,
-			left : 0,
-			width : clipwidth,
-			height : clipheight
-		};
+    /* define the clip-rectangle */
+    page.clipRect = {
+      top: 0,
+      left: 0,
+      width: clipwidth,
+      height: clipheight
+    }
 
-		/*
-		 * for pdf we need a bit more paperspace in some cases for example
-		 * (w:600,h:400), I don't know why.
-		 */
-		if (pdf) {
-			page.paperSize = {
-				width : clipwidth,
-				height : clipheight + 2
-			};
-		}
-	};
+    /*
+     * for pdf we need a bit more paperspace in some cases for example
+     * (w:600,h:400), I don't know why.
+     */
+    if (pdf) {
+      page.paperSize = {
+        width: clipwidth,
+        height: clipheight + 2
+      }
+    }
+  }
 
-	callback = args.callback;
+  callback = args.callback
 
-	// load necessary libraries
-	page.injectJs(args["jsstuff"]);
+  // load necessary libraries
+  page.injectJs(args['jsstuff'])
 
-	// load callback from file
-	if (callback !== undefined) {
-		callbackStr = fs.read(callback);
-	}
-	
-	theme = args.theme;
-	
-	// load callback from file
-	if (theme !== undefined) {
-		themesStr = fs.read(theme);
-	}
+  // load callback from file
+  if (callback !== undefined) {
+    callbackStr = fs.read(callback)
+  }
 
-	var renderer = function(width, height, str, callbackStr, themeStr, langStr, timeline) {
-		opt = JSON.parse(str);
+  theme = args.theme
 
-		var imagesLoadedMsg = 'Highcharts.imagesLoaded:7a7dfcb5df73aaa51e67c9f38c5b07cb', chart, nodes, nodeIter, elem, opacity;
+  // load callback from file
+  if (theme !== undefined) {
+    themesStr = fs.read(theme)
+  }
 
-		// dynamic script insertion
-		function loadScript(varStr, codeStr) {
-			var script = document.createElement('script');
-			script.type = 'text/javascript';
+  var renderer = function (width, height, str, callbackStr, themeStr, langStr, timeline) {
+    opt = JSON.parse(str)
 
-			var code = 'var ' + varStr + ' = ' + codeStr +  ';';			
-			var inlineScript = document.createTextNode(code);
-			script.appendChild(inlineScript) ;
+    var imagesLoadedMsg = 'Highcharts.imagesLoaded:7a7dfcb5df73aaa51e67c9f38c5b07cb', chart, nodes, nodeIter, elem,
+      opacity
 
-			document.getElementsByTagName('head')[0].appendChild(script);
-		} 
+    // dynamic script insertion
+    function loadScript (varStr, codeStr) {
+      var script = document.createElement('script')
+      script.type = 'text/javascript'
 
-		// are all images loaded in time?
-		function logCounter(counter) {
-			counter -= 1;
-			if (counter < 1) {
-				console.log(imagesLoadedMsg);
-			}
-		}
+      var code = 'var ' + varStr + ' = ' + codeStr + ';'
+      var inlineScript = document.createTextNode(code)
+      script.appendChild(inlineScript)
 
-		function loadImages() {
-			// are images loaded?
-			var images = document.querySelectorAll('svg image'), counter, i, img;
+      document.getElementsByTagName('head')[0].appendChild(script)
+    }
 
-			if (images.length > 0) {
+    // are all images loaded in time?
+    function logCounter (counter) {
+      counter -= 1
+      if (counter < 1) {
+        console.log(imagesLoadedMsg)
+      }
+    }
 
-				counter = images.length;
+    function loadImages () {
+      // are images loaded?
+      var images = document.querySelectorAll('svg image'), counter, i, img
 
-				for (i = 0; i < images.length; i += 1) {
-					img = new Image();
-					img.onload = logCounter(counter);
-					/*
-					 * force loading of images by setting the src attr.
-					 */
-					img.src = images[i].getAttribute('href');
-				}
-			} else {
-				// no images set property to all images
-				// loaded
-				console.log(imagesLoadedMsg);
-			}
-		}
+      if (images.length > 0) {
 
-		// formatJsJson is needed to fix javascript
-		// formatters in json
-		formatJsJson(opt);
+        counter = images.length
 
-		if (callbackStr !== 'undefined') {
-			loadScript('callback', callbackStr);
-		}
+        for (i = 0; i < images.length; i += 1) {
+          img = new Image()
+          img.onload = logCounter(counter)
+          /*
+           * force loading of images by setting the src attr.
+           */
+          img.src = images[i].getAttribute('href')
+        }
+      } else {
+        // no images set property to all images
+        // loaded
+        console.log(imagesLoadedMsg)
+      }
+    }
 
-		if (themeStr !== 'undefined') {
-			loadScript('highcharts_theme', themeStr);
-		}
+    // formatJsJson is needed to fix javascript
+    // formatters in json
+    formatJsJson(opt)
 
-		if (langStr !== 'undefined') {
-			loadScript('highcharts_lang', langStr);
-		}
+    if (callbackStr !== 'undefined') {
+      loadScript('callback', callbackStr)
+    }
 
-		document.body.style.margin = '0px';
-		var cont = document.createElement("div");
-		document.body.appendChild(cont);
+    if (themeStr !== 'undefined') {
+      loadScript('highcharts_theme', themeStr)
+    }
 
-		// disable animations
-		Highcharts.SVGRenderer.prototype.Element.prototype.animate = Highcharts.SVGRenderer.prototype.Element.prototype.attr;
+    if (langStr !== 'undefined') {
+      loadScript('highcharts_lang', langStr)
+    }
 
-		Highcharts.setOptions({ 
-			plotOptions: {
-				series: {
-					animation: false
-				}
-			}
-		});
+    document.body.style.margin = '0px'
+    var cont = document.createElement('div')
+    document.body.appendChild(cont)
 
-		if (!opt.chart) {
-			opt.chart = {};
-		}
+    // disable animations
+    Highcharts.SVGRenderer.prototype.Element.prototype.animate = Highcharts.SVGRenderer.prototype.Element.prototype.attr
 
-		opt.chart.renderTo = cont;
+    Highcharts.setOptions({
+      plotOptions: {
+        series: {
+          animation: false
+        }
+      }
+    })
 
-		console.log(opt);
+    if (!opt.chart) {
+      opt.chart = {}
+    }
 
-		// check if width is set. Order of precedence:
-		// args.width, options.chart.width and 600px
+    opt.chart.renderTo = cont
 
-		opt.chart.width = width;
-		opt.chart.height = height;
+    console.log(opt)
 
-		if (highcharts_theme !== undefined) {
-			Highcharts.theme = highcharts_theme;
-			Highcharts.setOptions(Highcharts.theme);
-		}
+    // check if width is set. Order of precedence:
+    // args.width, options.chart.width and 600px
 
-		if (highcharts_lang !== undefined) {
-			Highcharts.setOptions({ 
-				lang: highcharts_lang
-			});
-		}
+    opt.chart.width = width
+    opt.chart.height = height
 
-		if(timeline) {
-			chart = new Highcharts.StockChart(opt, callback);
-		} else {
-			chart = new Highcharts.Chart(opt, callback);
-		}
+    if (highcharts_theme !== undefined) {
+      Highcharts.theme = highcharts_theme
+      Highcharts.setOptions(Highcharts.theme)
+    }
 
-		// ensure images are all loaded
-		loadImages();
+    if (highcharts_lang !== undefined) {
+      Highcharts.setOptions({
+        lang: highcharts_lang
+      })
+    }
 
-		var container = cont.querySelector('.highcharts-container');
-		var svg = container.innerHTML;
-		
-		// Sanitize (the issue numbers are HighCharts')
-		svg = svg
-		.replace(/zIndex="[^"]+"/g, '')
-		.replace(/isShadow="[^"]+"/g, '')
-		.replace(/symbolName="[^"]+"/g, '')
-		.replace(/jQuery[0-9]+="[^"]+"/g, '')
-		.replace(/url\([^#]+#/g, 'url(#')
-		.replace(/<svg /, '<svg xmlns:xlink="http://www.w3.org/1999/xlink" ')
-		.replace(/ href=/g, ' xlink:href=')
-		.replace(/\n/, ' ')
-		// Any HTML added to the container after the SVG (#894)
-		.replace(/<\/svg>.*?$/, '</svg>') 
-		// Batik doesn't support rgba fills and strokes (#3095)
-		.replace(/(fill|stroke)="rgba\(([ 0-9]+,[ 0-9]+,[ 0-9]+),([ 0-9\.]+)\)"/g, '$1="rgb($2)" $1-opacity="$3"') 
+    if (timeline) {
+      chart = new Highcharts.StockChart(opt, callback)
+    } else {
+      chart = new Highcharts.Chart(opt, callback)
+    }
 
-		// Replace HTML entities, issue #347
-		.replace(/&nbsp;/g, '\u00A0') // no-break space
-		.replace(/&shy;/g,  '\u00AD'); // soft hyphen
+    // ensure images are all loaded
+    loadImages()
 
+    var container = cont.querySelector('.highcharts-container')
+    var svg = container.innerHTML
 
-		
-		return {
-			html : svg,
-			width : chart.chartWidth,
-			height : chart.chartHeight
-		};
+    // Sanitize (the issue numbers are HighCharts')
+    svg = svg
+      .replace(/zIndex="[^"]+"/g, '')
+      .replace(/isShadow="[^"]+"/g, '')
+      .replace(/symbolName="[^"]+"/g, '')
+      .replace(/jQuery[0-9]+="[^"]+"/g, '')
+      .replace(/url\([^#]+#/g, 'url(#')
+      .replace(/<svg /, '<svg xmlns:xlink="http://www.w3.org/1999/xlink" ')
+      .replace(/ href=/g, ' xlink:href=')
+      .replace(/\n/, ' ')
+      // Any HTML added to the container after the SVG (#894)
+      .replace(/<\/svg>.*?$/, '</svg>')
+      // Batik doesn't support rgba fills and strokes (#3095)
+      .replace(/(fill|stroke)="rgba\(([ 0-9]+,[ 0-9]+,[ 0-9]+),([ 0-9\.]+)\)"/g, '$1="rgb($2)" $1-opacity="$3"')
 
-	};
-	// load chart in page and return svg height and width
-	svg = page.evaluate(renderer, width, height, configstr, callbackStr, themeStr, langStr, timeline);
+      // Replace HTML entities, issue #347
+      .replace(/&nbsp;/g, '\u00A0') // no-break space
+      .replace(/&shy;/g, '\u00AD') // soft hyphen
 
-	page.close();
-	return svg.html;
+    return {
+      html: svg,
+      width: chart.chartWidth,
+      height: chart.chartHeight
+    }
+
+  }
+  // load chart in page and return svg height and width
+  svg = page.evaluate(renderer, width, height, configstr, callbackStr, themeStr, langStr, timeline)
+
+  page.close()
+  return svg.html
 
 }
 
 // TODO change this to use asynchronous api when phantomjs supports it
 // https://github.com/ariya/phantomjs/issues/10980
 
-function serve() {
-	var configstr = system.stdin.readLine();
-	if(configstr) {
-		var line;
-		var timeline = parseInt(configstr);
-		var width = parseInt(system.stdin.readLine());
-		var height = parseInt(system.stdin.readLine());
-		if(width < 0) {
-			width = 600;
-		}
-		if(height < 0) {
-			height = 400;
-		}
+function serve () {
+  var configstr = system.stdin.readLine()
+  if (configstr) {
+    var line
+    var timeline = parseInt(configstr)
+    var width = parseInt(system.stdin.readLine())
+    var height = parseInt(system.stdin.readLine())
+    if (width < 0) {
+      width = 600
+    }
+    if (height < 0) {
+      height = 400
+    }
 
-		var themeStr = system.stdin.readLine();
-		while((line = system.stdin.readLine()) != "___Lang:start") {
-			themeStr += line;
-		}
-		var langStr = system.stdin.readLine();
-		while((line = system.stdin.readLine()) != "___Config:start") {
-			langStr += line;
-		}
-		configstr = system.stdin.readLine();
-		while((line = system.stdin.readLine()) != "___VaadinSVGGenerator:run") {
-			configstr += line;
-		}
+    var themeStr = system.stdin.readLine()
+    while ((line = system.stdin.readLine()) != '___Lang:start') {
+      themeStr += line
+    }
+    var langStr = system.stdin.readLine()
+    while ((line = system.stdin.readLine()) != '___Config:start') {
+      langStr += line
+    }
+    configstr = system.stdin.readLine()
+    while ((line = system.stdin.readLine()) != '___VaadinSVGGenerator:run') {
+      configstr += line
+    }
 
-		try {
-			var svgresponse = render(configstr, themeStr, langStr, width, height, timeline);
-			console.log(svgresponse);
-			setTimeout(serve(), 5);
-		} catch (e) {
-			console.log("Render failed:\n" + e);
-		}
-	} else {
-		setTimeout(serve(), 5);
-	}
+    try {
+      var svgresponse = render(configstr, themeStr, langStr, width, height, timeline)
+      console.log(svgresponse)
+      setTimeout(serve(), 5)
+    } catch (e) {
+      console.log('Render failed:\n' + e)
+    }
+  } else {
+    setTimeout(serve(), 5)
+  }
 }
 
-console.log("OK, ready. \n");
+console.log('OK, ready. \n')
 
-serve();
+serve()
 

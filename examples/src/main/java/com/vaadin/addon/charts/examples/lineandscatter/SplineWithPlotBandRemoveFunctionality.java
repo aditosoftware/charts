@@ -11,40 +11,36 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 
 @SkipFromDemo
-public class SplineWithPlotBandRemoveFunctionality extends
-SplineWithPlotBands {
+public class SplineWithPlotBandRemoveFunctionality extends SplineWithPlotBands {
 
-    @SuppressWarnings("deprecation")
-    @Override
-    protected Component getChart() {
-        final Chart chart = (Chart) super.getChart();
+  @SuppressWarnings("deprecation")
+  @Override
+  protected Component getChart() {
+    final Chart chart = (Chart) super.getChart();
 
-        final Button removePlotBand = new Button("Remove PlotBands");
-        removePlotBand.setId("vaadin-button");
-        removePlotBand.addClickListener(new Button.ClickListener() {
+    final Button removePlotBand = new Button("Remove PlotBands");
+    removePlotBand.setId("vaadin-button");
+    removePlotBand.addClickListener(
+        new Button.ClickListener() {
 
-            @Override
-            public void buttonClick(ClickEvent event) {
-                Configuration configuration = chart.getConfiguration();
-                YAxis axis = configuration.getyAxis();
-                if (axis.getPlotBands() == null
-                        || axis.getPlotBands().length == 0) {
-                    createPlotBands(chart.getConfiguration().getyAxis());
-                    removePlotBand.setCaption("Remove PlotBands");
-                } else {
-                    chart.getConfiguration().getyAxis()
-                            .setPlotBands(new PlotBand[] {});
-                    removePlotBand.setCaption("Restore PlotBands");
-                }
-                chart.drawChart(configuration);
+          @Override
+          public void buttonClick(ClickEvent event) {
+            Configuration configuration = chart.getConfiguration();
+            YAxis axis = configuration.getyAxis();
+            if (axis.getPlotBands() == null || axis.getPlotBands().length == 0) {
+              createPlotBands(chart.getConfiguration().getyAxis());
+              removePlotBand.setCaption("Remove PlotBands");
+            } else {
+              chart.getConfiguration().getyAxis().setPlotBands(new PlotBand[] {});
+              removePlotBand.setCaption("Restore PlotBands");
             }
+            chart.drawChart(configuration);
+          }
         });
 
-        VerticalLayout verticalLayout = new VerticalLayout(removePlotBand, chart);
-        verticalLayout.setSpacing(false);
-        verticalLayout.setMargin(false);
-        return verticalLayout;
-    }
-
-
+    VerticalLayout verticalLayout = new VerticalLayout(removePlotBand, chart);
+    verticalLayout.setSpacing(false);
+    verticalLayout.setMargin(false);
+    return verticalLayout;
+  }
 }

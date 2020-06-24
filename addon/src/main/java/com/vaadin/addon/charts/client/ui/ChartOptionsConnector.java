@@ -8,10 +8,10 @@ package com.vaadin.addon.charts.client.ui;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
@@ -30,33 +30,32 @@ import com.vaadin.shared.ui.Connect;
 @Connect(com.vaadin.addon.charts.ChartOptions.class)
 public class ChartOptionsConnector extends AbstractExtensionConnector {
 
-    public ChartOptionsConnector() {
-        HighchartsScriptLoader.ensureInjected();
+  public ChartOptionsConnector() {
+    HighchartsScriptLoader.ensureInjected();
+  }
+
+  @Override
+  public void onStateChanged(StateChangeEvent event) {
+    super.onStateChanged(event);
+
+    if (getState().json != null) {
+      JavaScriptObject options =
+          JSONParser.parseStrict(getState().json).isObject().getJavaScriptObject();
+      applyOptions(options);
     }
+  }
 
-    @Override
-    public void onStateChanged(StateChangeEvent event) {
-        super.onStateChanged(event);
-
-        if (getState().json != null) {
-            JavaScriptObject options = JSONParser.parseStrict(getState().json)
-                    .isObject().getJavaScriptObject();
-            applyOptions(options);
-        }
-    }
-
-    private native void applyOptions(JavaScriptObject obj)
-    /*-{
+  private native void applyOptions(JavaScriptObject obj) /*-{
         $wnd.Highcharts.setOptions(obj);
     }-*/;
 
-    @Override
-    public ChartOptionsState getState() {
-        return (ChartOptionsState) super.getState();
-    }
+  @Override
+  public ChartOptionsState getState() {
+    return (ChartOptionsState) super.getState();
+  }
 
-    @Override
-    protected void extend(ServerConnector target) {
-        // NOP
-    }
+  @Override
+  protected void extend(ServerConnector target) {
+    // NOP
+  }
 }

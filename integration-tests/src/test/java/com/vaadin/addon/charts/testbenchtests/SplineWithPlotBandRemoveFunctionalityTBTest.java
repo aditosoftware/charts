@@ -1,45 +1,42 @@
 package com.vaadin.addon.charts.testbenchtests;
 
-import java.io.IOException;
-
-import org.junit.Test;
-
 import com.vaadin.addon.charts.examples.lineandscatter.SplineWithPlotBandRemoveFunctionality;
 import com.vaadin.testbench.elements.ButtonElement;
+import org.junit.Test;
 
-public class SplineWithPlotBandRemoveFunctionalityTBTest extends
-        AbstractParallelTest {
+import java.io.IOException;
 
-    boolean screenshotErrors = false;
+public class SplineWithPlotBandRemoveFunctionalityTBTest extends AbstractParallelTest {
 
-    @Test
-    public void test() throws IOException, AssertionError {
-        driver.get(getTestUrl());
-        ButtonElement button = $(ButtonElement.class).first();
-        // toggle first to give focus for button
-        button.click();
-        button.click();
+  boolean screenshotErrors = false;
 
-        waitForVaadin();
-        captureAndCompare("1-start");
+  @Test
+  public void test() throws IOException, AssertionError {
+    driver.get(getTestUrl());
+    ButtonElement button = $(ButtonElement.class).first();
+    // toggle first to give focus for button
+    button.click();
+    button.click();
 
-        button.click();
-        waitForVaadin();
-        captureAndCompare("2-removed");
+    waitForVaadin();
+    captureAndCompare("1-start");
 
-        button.click();
-        waitForVaadin();
-        captureAndCompare("1-start");
-    }
+    button.click();
+    waitForVaadin();
+    captureAndCompare("2-removed");
 
-    @Override
-    protected String getTestViewName() {
-        return SplineWithPlotBandRemoveFunctionality.class.getSimpleName();
-    }
+    button.click();
+    waitForVaadin();
+    captureAndCompare("1-start");
+  }
 
-    @Override
-    protected String getPackageName() {
-        return "lineandscatter";
-    }
+  @Override
+  protected String getTestViewName() {
+    return SplineWithPlotBandRemoveFunctionality.class.getSimpleName();
+  }
 
+  @Override
+  protected String getPackageName() {
+    return "lineandscatter";
+  }
 }

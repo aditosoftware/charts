@@ -8,17 +8,14 @@ package com.vaadin.addon.charts.model.serializers;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
  */
-
-import java.io.IOException;
-import java.time.Instant;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,23 +25,22 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.vaadin.addon.charts.util.Util;
 
-/**
- * Serializes all {@link java.time.Instant} objects as UTC long.
- *
- */
+import java.io.IOException;
+import java.time.Instant;
+
+/** Serializes all {@link java.time.Instant} objects as UTC long. */
 public class InstantSerializer extends JsonSerializer<Instant> {
 
-    public static Module getModule() {
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(Instant.class, new InstantSerializer());
+  public static Module getModule() {
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(Instant.class, new InstantSerializer());
 
-        return module;
-    }
+    return module;
+  }
 
-    @Override
-    public void serialize(Instant value, JsonGenerator gen,
-                          SerializerProvider serializers) throws IOException,
-            JsonProcessingException {
-        gen.writeNumber(Util.toHighchartsTS(value));
-    }
+  @Override
+  public void serialize(Instant value, JsonGenerator gen, SerializerProvider serializers)
+      throws IOException, JsonProcessingException {
+    gen.writeNumber(Util.toHighchartsTS(value));
+  }
 }

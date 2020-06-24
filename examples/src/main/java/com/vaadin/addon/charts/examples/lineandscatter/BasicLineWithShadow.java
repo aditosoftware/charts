@@ -11,28 +11,27 @@ import com.vaadin.ui.Component;
 @SkipFromDemo
 public class BasicLineWithShadow extends AbstractVaadinChartExample {
 
-    @Override
-    public String getDescription() {
-        return "Line chart for testing shadow.";
-    }
+  @Override
+  public String getDescription() {
+    return "Line chart for testing shadow.";
+  }
 
-    @Override
-    protected Component getChart() {
-        Chart chart = new Chart();
-        chart.setHeight("450px");
-        chart.setWidth("100%");
+  @Override
+  protected Component getChart() {
+    Chart chart = new Chart();
+    chart.setHeight("450px");
+    chart.setWidth("100%");
 
-        Configuration configuration = chart.getConfiguration();
-        configuration.getChart().setType(ChartType.LINE);
+    Configuration configuration = chart.getConfiguration();
+    configuration.getChart().setType(ChartType.LINE);
 
-        configuration.getChart().setShadow(true);
+    configuration.getChart().setShadow(true);
 
-        ListSeries ls = new ListSeries();
-        ls.setData(1,2,3,4,5,6,7);
-        configuration.addSeries(ls);
-        chart.drawChart(configuration);
+    ListSeries ls = new ListSeries();
+    ls.setData(1, 2, 3, 4, 5, 6, 7);
+    configuration.addSeries(ls);
+    chart.drawChart(configuration);
 
-        return chart;
-    }
-
+    return chart;
+  }
 }

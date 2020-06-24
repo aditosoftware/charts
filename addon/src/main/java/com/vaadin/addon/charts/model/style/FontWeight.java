@@ -8,10 +8,10 @@ package com.vaadin.addon.charts.model.style;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
@@ -19,30 +19,23 @@ package com.vaadin.addon.charts.model.style;
 
 import com.vaadin.addon.charts.model.ChartEnum;
 
-/**
- * Font weight used by Style class
- */
+/** Font weight used by Style class */
 public enum FontWeight implements ChartEnum {
 
-    /**
-     * Normal text
-     */
-    NORMAL("normal"),
+  /** Normal text */
+  NORMAL("normal"),
 
-    /**
-     * Bold text
-     */
-    BOLD("bold");
+  /** Bold text */
+  BOLD("bold");
 
-    private String type;
+  private String type;
 
-    private FontWeight(String type) {
-        this.type = type;
-    }
+  private FontWeight(String type) {
+    this.type = type;
+  }
 
-    @Override
-    public String toString() {
-        return type;
-    }
-
+  @Override
+  public String toString() {
+    return type;
+  }
 }

@@ -8,10 +8,10 @@ package com.vaadin.addon.charts;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
@@ -19,19 +19,14 @@ package com.vaadin.addon.charts;
 
 import java.io.Serializable;
 
-/**
- * Listener interface for Y axes extremes changed events
- */
+/** Listener interface for Y axes extremes changed events */
 @FunctionalInterface
 public interface YAxesExtremesChangeListener extends Serializable {
 
-    /**
-     * Called when a Y axis extremes has changed
-     *
-     * @param event
-     *            the {@link YAxesExtremesChangeEvent} containing information on the
-     *            event.
-     */
-    public void onYAxesExtremesChange(YAxesExtremesChangeEvent event);
-
+  /**
+   * Called when a Y axis extremes has changed
+   *
+   * @param event the {@link YAxesExtremesChangeEvent} containing information on the event.
+   */
+  public void onYAxesExtremesChange(YAxesExtremesChangeEvent event);
 }

@@ -30,43 +30,41 @@ import com.vaadin.ui.Component;
 @SkipFromDemo
 public class BasicLineWithCustomCrosshairLabels extends AbstractVaadinChartExample {
 
-    @Override
-    public String getDescription() {
-        return "Basic chart with customized crosshair label";
-    }
+  @Override
+  public String getDescription() {
+    return "Basic chart with customized crosshair label";
+  }
 
-    @Override
-    protected Component getChart() {
-        Chart chart = new Chart();
-        chart.setTimeline(true);
-        chart.setId("chart");
-        Configuration config = chart.getConfiguration();
-        config.setTitle("Customized crosshairs");
-        config.getChart().setAnimation(false);
-        Crosshair xCrossHair = new Crosshair();
-        xCrossHair.getLabel().setEnabled(true);
-        xCrossHair.getLabel().setBackgroundColor(new SolidColor("#ff0000"));
-        xCrossHair.getLabel().setBorderColor(new SolidColor("#ff00ff"));
-        xCrossHair.getLabel().setBorderWidth(3);
-        config.getxAxis().setCrosshair(xCrossHair);
+  @Override
+  protected Component getChart() {
+    Chart chart = new Chart();
+    chart.setTimeline(true);
+    chart.setId("chart");
+    Configuration config = chart.getConfiguration();
+    config.setTitle("Customized crosshairs");
+    config.getChart().setAnimation(false);
+    Crosshair xCrossHair = new Crosshair();
+    xCrossHair.getLabel().setEnabled(true);
+    xCrossHair.getLabel().setBackgroundColor(new SolidColor("#ff0000"));
+    xCrossHair.getLabel().setBorderColor(new SolidColor("#ff00ff"));
+    xCrossHair.getLabel().setBorderWidth(3);
+    config.getxAxis().setCrosshair(xCrossHair);
 
-        Crosshair yCrossHair = new Crosshair();
-        yCrossHair.setColor(new SolidColor("#880000"));
-        yCrossHair.setDashStyle(DashStyle.DOT);
-        yCrossHair.setWidth(5);
-        yCrossHair.setZIndex(1);
-        config.getyAxis().setCrosshair(yCrossHair);
+    Crosshair yCrossHair = new Crosshair();
+    yCrossHair.setColor(new SolidColor("#880000"));
+    yCrossHair.setDashStyle(DashStyle.DOT);
+    yCrossHair.setWidth(5);
+    yCrossHair.setZIndex(1);
+    config.getyAxis().setCrosshair(yCrossHair);
 
-        ListSeries ls = new ListSeries();
-        ls.setName("Data");
-        ls.setData(29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,
-                194.1, 95.6, 54.4);
+    ListSeries ls = new ListSeries();
+    ls.setName("Data");
+    ls.setData(29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4);
 
-        config.setSeries(ls);
+    config.setSeries(ls);
 
-        chart.drawChart(config);
+    chart.drawChart(config);
 
-        return chart;
-    }
-
+    return chart;
+  }
 }

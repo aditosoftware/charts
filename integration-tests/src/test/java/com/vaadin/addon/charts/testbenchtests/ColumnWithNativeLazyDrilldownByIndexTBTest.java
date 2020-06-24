@@ -1,39 +1,35 @@
 package com.vaadin.addon.charts.testbenchtests;
 
-import java.io.IOException;
-
+import com.vaadin.addon.charts.examples.columnandbar.ColumnWithNativeLazyDrilldownByIndex;
+import com.vaadin.testbench.By;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
-import com.vaadin.addon.charts.examples.columnandbar.ColumnWithNativeLazyDrilldownByIndex;
-import com.vaadin.testbench.By;
+import java.io.IOException;
 
-public class ColumnWithNativeLazyDrilldownByIndexTBTest extends
-        AbstractParallelTest {
+public class ColumnWithNativeLazyDrilldownByIndexTBTest extends AbstractParallelTest {
 
-    @Override
-    protected String getTestViewName() {
-        return ColumnWithNativeLazyDrilldownByIndex.class.getSimpleName();
-    }
+  @Override
+  protected String getTestViewName() {
+    return ColumnWithNativeLazyDrilldownByIndex.class.getSimpleName();
+  }
 
-    @Test
-    public void test() throws IOException, AssertionError {
-        driver.get(getTestUrl());
+  @Test
+  public void test() throws IOException, AssertionError {
+    driver.get(getTestUrl());
 
-        waitForVaadin();
-        captureAndCompare("before");
+    waitForVaadin();
+    captureAndCompare("before");
 
-        WebElement element =
-            driver.findElement(By.cssSelector(".highcharts-drilldown-point"));
-        element.click();
+    WebElement element = driver.findElement(By.cssSelector(".highcharts-drilldown-point"));
+    element.click();
 
-        waitForDynamicChanges();
-        captureAndCompare("after");
-    }
+    waitForDynamicChanges();
+    captureAndCompare("after");
+  }
 
-    @Override
-    protected String getPackageName() {
-        return "columnandbar";
-    }
-
+  @Override
+  protected String getPackageName() {
+    return "columnandbar";
+  }
 }

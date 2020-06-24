@@ -8,15 +8,14 @@ import com.vaadin.ui.Component;
 @SuppressWarnings("serial")
 public class SkiesThemedBarChart extends BarWithNegativeStack {
 
-    @Override
-    public String getDescription() {
-        return "Skies themed: " + super.getDescription();
-    }
+  @Override
+  public String getDescription() {
+    return "Skies themed: " + super.getDescription();
+  }
 
-    @Override
-    protected Component getChart() {
-        ChartOptions.get().setTheme(new SkiesTheme());
-        return super.getChart();
-    }
-
+  @Override
+  protected Component getChart() {
+    ChartOptions.get().setTheme(new SkiesTheme());
+    return super.getChart();
+  }
 }

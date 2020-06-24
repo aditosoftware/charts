@@ -8,29 +8,28 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 
 @SkipFromDemo
-public class ChartWithLazyDrilldownInTabSheet
-        extends AbstractVaadinChartExample {
+public class ChartWithLazyDrilldownInTabSheet extends AbstractVaadinChartExample {
 
-    /**
-     * 
-     * Test UI for #483.
-     * 
-     * To reproduce issue:
-     * <ul>
-     * <li>Click on IE</li>
-     * <li>Change to second tab</li>
-     * <li>Change to first tab</li>
-     * <li>Click on opera</li>
-     * </ul>
-     */
-    @Override
-    protected Component getChart() {
-        TabSheet tabs = new TabSheet();
-        tabs.setSizeFull();
-        Chart chart = (Chart) new ColumnWithNativeLazyDrilldown().getChart();
-        tabs.addTab(chart, "First tab with chart");
-        Label label = new Label("second tab content");
-        tabs.addTab(label, "Other tab");
-        return tabs;
-    }
+  /**
+   * Test UI for #483.
+   *
+   * <p>To reproduce issue:
+   *
+   * <ul>
+   *   <li>Click on IE
+   *   <li>Change to second tab
+   *   <li>Change to first tab
+   *   <li>Click on opera
+   * </ul>
+   */
+  @Override
+  protected Component getChart() {
+    TabSheet tabs = new TabSheet();
+    tabs.setSizeFull();
+    Chart chart = (Chart) new ColumnWithNativeLazyDrilldown().getChart();
+    tabs.addTab(chart, "First tab with chart");
+    Label label = new Label("second tab content");
+    tabs.addTab(label, "Other tab");
+    return tabs;
+  }
 }

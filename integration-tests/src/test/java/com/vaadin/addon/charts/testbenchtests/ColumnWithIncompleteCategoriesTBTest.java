@@ -4,13 +4,13 @@ import com.vaadin.addon.charts.examples.columnandbar.ColumnWithIncompleteCategor
 
 public class ColumnWithIncompleteCategoriesTBTest extends AbstractSimpleScreenShotTestBenchTest {
 
-    @Override
-    protected String getTestViewName() {
-        return ColumnWithIncompleteCategories.class.getSimpleName();
-    }
+  @Override
+  protected String getTestViewName() {
+    return ColumnWithIncompleteCategories.class.getSimpleName();
+  }
 
-    @Override
-    protected String getPackageName() {
-        return "columnandbar";
-    }
+  @Override
+  protected String getPackageName() {
+    return "columnandbar";
+  }
 }

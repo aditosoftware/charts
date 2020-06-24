@@ -13,26 +13,28 @@ import com.vaadin.ui.VerticalLayout;
 @SkipFromDemo
 public class MultipleAxesWithResetZoom extends AbstractVaadinChartExample {
 
-    @Override
-    public String getDescription() {
-        return "Multiple axes with reset zoom button";
-    }
+  @Override
+  public String getDescription() {
+    return "Multiple axes with reset zoom button";
+  }
 
-    @Override
-    protected Component getChart() {
-        final Chart chart = (Chart) new MultipleAxes().getChart();
-        chart.getConfiguration().getTooltip().setEnabled(false);
-        Button button = new Button("Reset zoom", new ClickListener() {
+  @Override
+  protected Component getChart() {
+    final Chart chart = (Chart) new MultipleAxes().getChart();
+    chart.getConfiguration().getTooltip().setEnabled(false);
+    Button button =
+        new Button(
+            "Reset zoom",
+            new ClickListener() {
 
-            @Override
-            public void buttonClick(ClickEvent event) {
+              @Override
+              public void buttonClick(ClickEvent event) {
                 chart.getConfiguration().resetZoom();
-            }
-        });
-        VerticalLayout verticalLayout = new VerticalLayout(chart, button);
-        verticalLayout.setSpacing(false);
-        verticalLayout.setMargin(false);
-        return verticalLayout;
-    }
-
+              }
+            });
+    VerticalLayout verticalLayout = new VerticalLayout(chart, button);
+    verticalLayout.setSpacing(false);
+    verticalLayout.setMargin(false);
+    return verticalLayout;
+  }
 }

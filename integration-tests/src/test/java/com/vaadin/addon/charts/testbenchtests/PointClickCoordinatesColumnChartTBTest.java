@@ -1,16 +1,13 @@
 package com.vaadin.addon.charts.testbenchtests;
 
+import com.vaadin.addon.charts.examples.pointclickevent.PointClickCoordinatesColumnChart;
 import org.junit.Ignore;
 
-import com.vaadin.addon.charts.examples.pointclickevent.PointClickCoordinatesColumnChart;
-
 @Ignore("Absolute coordinates affected by Theme change")
-public class PointClickCoordinatesColumnChartTBTest
-        extends AbstractPointClickCoordinatesTest {
+public class PointClickCoordinatesColumnChartTBTest extends AbstractPointClickCoordinatesTest {
 
-    @Override
-    protected String getTestViewName() {
-        return PointClickCoordinatesColumnChart.class.getSimpleName();
-    }
-
+  @Override
+  protected String getTestViewName() {
+    return PointClickCoordinatesColumnChart.class.getSimpleName();
+  }
 }

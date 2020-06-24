@@ -27,7 +27,6 @@ $v-included-additional-styles: ();
   }
 
 
-
   // Theme selector
 
   .v-caption-theme-selector,
@@ -54,7 +53,6 @@ $v-included-additional-styles: ();
   }
 
 
-
   // Logo
 
   .logo {
@@ -70,7 +68,6 @@ $v-included-additional-styles: ();
       background-image: url("vaadin-charts-logo.png");
     }
   }
-
 
 
   // Sidebar links
@@ -93,7 +90,6 @@ $v-included-additional-styles: ();
       content: "\00b7";
     }
   }
-
 
 
   // Filter textfield
@@ -124,7 +120,6 @@ $v-included-additional-styles: ();
   @include valo-textfield-inline-icon($stylenames: filter);
 
 
-
   // Tree
 
   .v-tree {
@@ -143,7 +138,6 @@ $v-included-additional-styles: ();
     background-color: $bg-color;
     color: valo-font-color($bg-color, 1);
   }
-
 
 
   // Main tabsheet

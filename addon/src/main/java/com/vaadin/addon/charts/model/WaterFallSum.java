@@ -8,45 +8,43 @@ package com.vaadin.addon.charts.model;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
  */
 
 /**
- * DataSeriesItem that can be used as sum or intermediate sum in waterfall
- * charts. Note that sums don't support all standard point features and their
- * value don't need be be set (automatically calculated).
+ * DataSeriesItem that can be used as sum or intermediate sum in waterfall charts. Note that sums
+ * don't support all standard point features and their value don't need be be set (automatically
+ * calculated).
  */
 public class WaterFallSum extends DataSeriesItem {
 
-    @SuppressWarnings("unused")
-    private Boolean isSum = Boolean.TRUE;
-    private Boolean isIntermediateSum;
+  @SuppressWarnings("unused")
+  private Boolean isSum = Boolean.TRUE;
 
-    public WaterFallSum(String name) {
-        setName(name);
-    }
+  private Boolean isIntermediateSum;
 
-    /**
-     * @param intermediate
-     *            true if the sum is should be intermediate
-     */
-    public void setIntermediate(boolean intermediate) {
-        if (intermediate) {
-            isIntermediateSum = Boolean.TRUE;
-            isSum = null;
-        } else {
-            isIntermediateSum = null;
-            isSum = Boolean.TRUE;
-        }
-    }
+  public WaterFallSum(String name) {
+    setName(name);
+  }
 
-    public boolean isIntermediate() {
-        return isIntermediateSum != null;
+  /** @param intermediate true if the sum is should be intermediate */
+  public void setIntermediate(boolean intermediate) {
+    if (intermediate) {
+      isIntermediateSum = Boolean.TRUE;
+      isSum = null;
+    } else {
+      isIntermediateSum = null;
+      isSum = Boolean.TRUE;
     }
+  }
+
+  public boolean isIntermediate() {
+    return isIntermediateSum != null;
+  }
 }

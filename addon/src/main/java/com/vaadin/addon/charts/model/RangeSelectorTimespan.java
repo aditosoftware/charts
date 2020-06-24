@@ -8,36 +8,39 @@ package com.vaadin.addon.charts.model;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
  */
 
-/**
- * Possible timespan values for range selector buttons
- */
+/** Possible timespan values for range selector buttons */
 public enum RangeSelectorTimespan implements ChartEnum {
-    MILLISECOND("millisecond"), SECOND("second"), MINUTE("minute"), DAY("day"), WEEK(
-            "week"), MONTH("month"), YEAR_TO_DATE("ytd"), YEAR("year"), ALL(
-            "all");
+  MILLISECOND("millisecond"),
+  SECOND("second"),
+  MINUTE("minute"),
+  DAY("day"),
+  WEEK("week"),
+  MONTH("month"),
+  YEAR_TO_DATE("ytd"),
+  YEAR("year"),
+  ALL("all");
 
-    private String name;
+  private String name;
 
-    private RangeSelectorTimespan(String name) {
-        this.name = name;
-    }
+  private RangeSelectorTimespan(String name) {
+    this.name = name;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
+  @Override
+  public String toString() {
+    return name;
+  }
 }

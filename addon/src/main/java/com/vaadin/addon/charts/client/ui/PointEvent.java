@@ -8,10 +8,10 @@ package com.vaadin.addon.charts.client.ui;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
@@ -21,37 +21,29 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public class PointEvent extends JavaScriptObject {
 
-    protected PointEvent() {
+  protected PointEvent() {}
 
-    }
-
-    public native final String getCategory()
-    /*-{
+  public final native String getCategory() /*-{
         return "" + this.target.category;
     }-*/;
 
-    public native final String getName()
-    /*-{
+  public final native String getName() /*-{
         return this.target.name;
     }-*/;
 
-    public native final String getId()
-    /*-{
+  public final native String getId() /*-{
         return this.target.id;
     }-*/;
 
-    public native final HighchartPoint getPoint()
-    /*-{
+  public final native HighchartPoint getPoint() /*-{
         return this.target;
     }-*/;
 
-    public native final HighchartAxis getXAxis()
-    /*-{
+  public final native HighchartAxis getXAxis() /*-{
         return this.target.series.xAxis;
     }-*/;
 
-    public native final HighchartAxis getYAxis()
-    /*-{
+  public final native HighchartAxis getYAxis() /*-{
         return this.target.series.yAxis;
     }-*/;
 }

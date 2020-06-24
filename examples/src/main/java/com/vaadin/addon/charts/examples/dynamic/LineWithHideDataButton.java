@@ -13,33 +13,30 @@ import com.vaadin.ui.VerticalLayout;
 @SkipFromDemo
 public class LineWithHideDataButton extends AbstractVaadinChartExample {
 
-    @Override
-    public String getDescription() {
-        return "Basic Line With Data Labels";
-    }
+  @Override
+  public String getDescription() {
+    return "Basic Line With Data Labels";
+  }
 
-    @Override
-    protected Component getChart() {
-        Label extremes = new Label();
-        extremes.setId("extremesLabel");
+  @Override
+  protected Component getChart() {
+    Label extremes = new Label();
+    extremes.setId("extremesLabel");
 
-        Chart chart = new Chart();
+    Chart chart = new Chart();
 
-        Configuration configuration = chart.getConfiguration();
+    Configuration configuration = chart.getConfiguration();
 
-        ListSeries ls = new ListSeries();
-        ls.setData(7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3,
-                13.9, 9.6);
-        configuration.addSeries(ls);
-        chart.addXAxesExtremesChangeListener((event) -> extremes.setValue(
-                "Min " + event.getMinimum() + " Max: " + event.getMaximum()));
+    ListSeries ls = new ListSeries();
+    ls.setData(7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6);
+    configuration.addSeries(ls);
+    chart.addXAxesExtremesChangeListener(
+        (event) -> extremes.setValue("Min " + event.getMinimum() + " Max: " + event.getMaximum()));
 
-        final Button showHideSeries = new Button("Show/Hide series");
-        showHideSeries.setId("showHideSeriesButton");
-        showHideSeries
-                .addClickListener((e) -> ls.setVisible(!ls.isVisible()));
+    final Button showHideSeries = new Button("Show/Hide series");
+    showHideSeries.setId("showHideSeriesButton");
+    showHideSeries.addClickListener((e) -> ls.setVisible(!ls.isVisible()));
 
-        return new VerticalLayout(showHideSeries, extremes, chart);
-    }
-
+    return new VerticalLayout(showHideSeries, extremes, chart);
+  }
 }

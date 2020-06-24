@@ -8,10 +8,10 @@ package com.vaadin.addon.charts.client.ui;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
@@ -19,41 +19,31 @@ package com.vaadin.addon.charts.client.ui;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-/**
- * Abstract class with common attributes for click events
- *
- */
+/** Abstract class with common attributes for click events */
 public class AbstractClickEvent extends JavaScriptObject {
-    protected AbstractClickEvent() {
-    }
+  protected AbstractClickEvent() {}
 
-    public native final boolean isAltKey()
-    /*-{
+  public final native boolean isAltKey() /*-{
         return this.altKey;
     }-*/;
 
-    public native final boolean isCtrlKey()
-    /*-{
+  public final native boolean isCtrlKey() /*-{
         return this.ctrlKey;
     }-*/;
 
-    public native final boolean isShiftKey()
-    /*-{
+  public final native boolean isShiftKey() /*-{
         return this.shiftKey;
     }-*/;
 
-    public native final boolean isMetaKey()
-    /*-{
+  public final native boolean isMetaKey() /*-{
         return this.metaKey;
     }-*/;
 
-    public native final int getButton()
-    /*-{
+  public final native int getButton() /*-{
         return this.button;
     }-*/;
 
-    public native final int getChartX()
-    /*-{
+  public final native int getChartX() /*-{
         if (this.chartX) {
           return this.chartX;
         } else {
@@ -61,13 +51,11 @@ public class AbstractClickEvent extends JavaScriptObject {
         }
     }-*/;
 
-    public native final int getChartY()
-    /*-{
+  public final native int getChartY() /*-{
         if (this.chartY) {
           return this.chartY;
         } else {
           return 0;
         }
     }-*/;
-
 }

@@ -8,10 +8,10 @@ package com.vaadin.addon.charts.client.ui;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
@@ -24,29 +24,25 @@ import com.vaadin.addon.charts.shared.ChartConnector;
 
 public class HighchartConfig extends JavaScriptObject {
 
-    protected HighchartConfig() {
-    };
+  protected HighchartConfig() {};
 
-    public static HighchartConfig createFromServerSideString(String confStr,
-            String jsonState) {
-        HighchartConfig conf;
-        if (confStr != null) {
-            conf = (HighchartConfig) JSONParser.parseStrict(confStr)
-                    .isObject().getJavaScriptObject();
-            conf.prepare();
-        } else {
-            conf = JavaScriptObject.createObject().cast();
-        }
-        if (jsonState != null) {
-            merge(conf, jsonState);
-        }
-        conf.initMouseOverHandler();
-
-        return conf;
+  public static HighchartConfig createFromServerSideString(String confStr, String jsonState) {
+    HighchartConfig conf;
+    if (confStr != null) {
+      conf = (HighchartConfig) JSONParser.parseStrict(confStr).isObject().getJavaScriptObject();
+      conf.prepare();
+    } else {
+      conf = JavaScriptObject.createObject().cast();
     }
+    if (jsonState != null) {
+      merge(conf, jsonState);
+    }
+    conf.initMouseOverHandler();
 
-    private static native void merge(HighchartConfig conf, String jsonState)
-    /*-{
+    return conf;
+  }
+
+  private static native void merge(HighchartConfig conf, String jsonState) /*-{
         var cfg = $wnd.eval('('+jsonState+')');
         var merge = function(dst, src) {
           for (var property in src) {
@@ -64,12 +60,11 @@ public class HighchartConfig extends JavaScriptObject {
         merge(conf, cfg);
     }-*/;
 
-    /**
-     * Searches all fields with _fn_ prefix and generates new field without
-     * prefix with eval around the string code.
-     */
-    private final native void searchAndEvalFields()
-    /*-{
+  /**
+   * Searches all fields with _fn_ prefix and generates new field without prefix with eval around
+   * the string code.
+   */
+  private final native void searchAndEvalFields() /*-{
         var re = /( |\+)(Highcharts\.)/g;
         var re_fn_prop = /^_fn_/;
         (function recursiveFunction(obj) {
@@ -105,12 +100,11 @@ public class HighchartConfig extends JavaScriptObject {
         })(this);
     }-*/;
 
-    private void prepare() {
-        searchAndEvalFields();
-    }
+  private void prepare() {
+    searchAndEvalFields();
+  }
 
-    public final native void setClickHandler(ChartClickHandler handler)
-    /*-{
+  public final native void setClickHandler(ChartClickHandler handler) /*-{
         if(!this.chart) this.chart = {};
         if(!this.chart.events) this.chart.events = {};
         this.chart.events.click = $entry(function(e) {
@@ -118,8 +112,7 @@ public class HighchartConfig extends JavaScriptObject {
         });
     }-*/;
 
-    public final native void setDrilldownHandler(ChartDrilldownHandler handler)
-    /*-{
+  public final native void setDrilldownHandler(ChartDrilldownHandler handler) /*-{
         if(!this.chart) this.chart = {};
         if(!this.chart.events) this.chart.events = {};
         this.chart.events.drilldown = $entry(function(e) {
@@ -130,60 +123,52 @@ public class HighchartConfig extends JavaScriptObject {
         });
     }-*/;
 
-    public final native void setCheckboxClickHandler(CheckboxClickHandler handler)
-    /*-{
+  public final native void setCheckboxClickHandler(CheckboxClickHandler handler) /*-{
         @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.series.events");
         this.plotOptions.series.events.checkboxClick = $entry(function(e) {
             return handler.@com.vaadin.addon.charts.client.ui.CheckboxClickHandler::onClick(Lcom/vaadin/addon/charts/client/ui/CheckboxClickEvent;)(e);
         });
     }-*/;
 
-    public final native void setSeriesHideHandler(SeriesHideHandler handler)
-    /*-{
+  public final native void setSeriesHideHandler(SeriesHideHandler handler) /*-{
         @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.series.events");
         this.plotOptions.series.events.hide = $entry(function(e) {
             return handler.@com.vaadin.addon.charts.client.ui.SeriesHideHandler::onHide(Lcom/vaadin/addon/charts/client/ui/SeriesEvent;)(e);
         });
     }-*/;
 
-    public final native void setSeriesShowHandler(SeriesShowHandler handler)
-    /*-{
+  public final native void setSeriesShowHandler(SeriesShowHandler handler) /*-{
         @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.series.events");
         this.plotOptions.series.events.show = $entry(function(e) {
             return handler.@com.vaadin.addon.charts.client.ui.SeriesShowHandler::onShow(Lcom/vaadin/addon/charts/client/ui/SeriesEvent;)(e);
         });
     }-*/;
 
-    public final native void setXAxesAfterSetExtremeHandler(
-        AfterSetExtremeHandler handler)
-    /*-{
+  public final native void setXAxesAfterSetExtremeHandler(AfterSetExtremeHandler handler) /*-{
         if(!this.xAxis) this.xAxis = {};
         var axes = [].concat(this.xAxis);
         @com.vaadin.addon.charts.client.ui.HighchartConfig::setAfterExtremesHandlerTo(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/vaadin/addon/charts/client/ui/AfterSetExtremeHandler;)(axes, handler);
     }-*/;
 
-    public final native void setYAxesAfterSetExtremeHandler(
-        AfterSetExtremeHandler handler)
-    /*-{
+  public final native void setYAxesAfterSetExtremeHandler(AfterSetExtremeHandler handler) /*-{
         if(!this.yAxis) this.yAxis = {};
         var axes = [].concat(this.yAxis);
         @com.vaadin.addon.charts.client.ui.HighchartConfig::setAfterExtremesHandlerTo(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/vaadin/addon/charts/client/ui/AfterSetExtremeHandler;)(axes, handler);
     }-*/;
 
-    public static final native void setAfterExtremesHandlerTo(JavaScriptObject axes, AfterSetExtremeHandler handler)
-    /*-{
-        for(var i = 0; i < axes.length; ++i) {
-            var axis = axes[i];
-            if(!axis.events) axis.events = {};
-            axis.events.afterSetExtremes = $entry(function(e) {
-                return handler.@com.vaadin.addon.charts.client.ui.AfterSetExtremeHandler::afterSetExtreme(Lcom/vaadin/addon/charts/client/ui/SetExtremesEvent;)(e);
-            });
-        }
-    }-*/;
+  public static final native void setAfterExtremesHandlerTo(
+      JavaScriptObject axes, AfterSetExtremeHandler handler)
+      /*-{
+          for(var i = 0; i < axes.length; ++i) {
+              var axis = axes[i];
+              if(!axis.events) axis.events = {};
+              axis.events.afterSetExtremes = $entry(function(e) {
+                  return handler.@com.vaadin.addon.charts.client.ui.AfterSetExtremeHandler::afterSetExtreme(Lcom/vaadin/addon/charts/client/ui/SetExtremesEvent;)(e);
+              });
+          }
+      }-*/ ;
 
-    public final native void setSeriesPointClickHandler(
-            PointClickHandler handler)
-    /*-{
+  public final native void setSeriesPointClickHandler(PointClickHandler handler) /*-{
         @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.series.point.events");
         this.plotOptions.series.point.events.click = $entry(function(e) {
             //only handle event if point is not drilldown
@@ -194,37 +179,30 @@ public class HighchartConfig extends JavaScriptObject {
         });
     }-*/;
 
-    public final native void setColumnClickHandler(PointClickHandler handler)
-    /*-{
+  public final native void setColumnClickHandler(PointClickHandler handler) /*-{
         @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.column.point.events");
         this.plotOptions.series.point.events.click = $entry(function(e) {
             return handler.@com.vaadin.addon.charts.client.ui.PointClickHandler::onClick(Lcom/vaadin/addon/charts/client/ui/PointClickEvent;)(e);
         });
     }-*/;
 
-    public final native void setChartSelectionHandler(
-            ChartSelectionHandler handler)
-    /*-{
+  public final native void setChartSelectionHandler(ChartSelectionHandler handler) /*-{
         @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"chart.events");
         this.chart.events.selection = $entry(function(e) {
             return handler.@com.vaadin.addon.charts.client.ui.ChartSelectionHandler::onSelection(Lcom/vaadin/addon/charts/client/ui/ChartSelectionEvent;)(e);
         });
     }-*/;
 
-    public final native void setLegendItemClickHandler(
-            LegendItemClickHandler handler)
-    /*-{
+  public final native void setLegendItemClickHandler(LegendItemClickHandler handler) /*-{
         @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.series.events");
         @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.pie.point.events");
-        
+
         this.plotOptions.series.events.legendItemClick = this.plotOptions.pie.point.events.legendItemClick = $entry(function(e) {
             return handler.@com.vaadin.addon.charts.client.ui.LegendItemClickHandler::onClick(Lcom/vaadin/addon/charts/client/ui/SeriesEvent;)(e);
         });
     }-*/;
 
-
-    public final native void setPointSelectHandler(PointSelectHandler handler)
-    /*-{
+  public final native void setPointSelectHandler(PointSelectHandler handler) /*-{
         @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.series.point.events");
 
         this.plotOptions.series.point.events.select = $entry(function(e) {
@@ -232,8 +210,7 @@ public class HighchartConfig extends JavaScriptObject {
         });
     }-*/;
 
-    public final native void setPointUnselectHandler(PointUnselectHandler handler)
-    /*-{
+  public final native void setPointUnselectHandler(PointUnselectHandler handler) /*-{
         @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.series.point.events");
 
         this.plotOptions.series.point.events.unselect = $entry(function(e) {
@@ -241,9 +218,7 @@ public class HighchartConfig extends JavaScriptObject {
         });
     }-*/;
 
-    public static final native void ensureObjectStructure(JavaScriptObject obj,
-            String path)
-    /*-{
+  public static final native void ensureObjectStructure(JavaScriptObject obj, String path) /*-{
      var parts = path.split(".");
         for (var i=0; i<parts.length; i++) {
             if (!obj[parts[i]]) obj[parts[i]] = {};
@@ -251,12 +226,8 @@ public class HighchartConfig extends JavaScriptObject {
         }
     }-*/;
 
-    /**
-     * If data series item has a defined cursor it will be set when mouse is
-     * over the item
-     */
-    private final native void initMouseOverHandler()
-    /*-{
+  /** If data series item has a defined cursor it will be set when mouse is over the item */
+  private final native void initMouseOverHandler() /*-{
        @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.series.point.events");
        this.plotOptions.series.point.events.mouseOver = function(){
            if(this.cursor){
@@ -265,8 +236,7 @@ public class HighchartConfig extends JavaScriptObject {
        };
     }-*/;
 
-    public native final HighchartJsOverlay renderTo(Element element, boolean timeline)
-    /*-{
+  public final native HighchartJsOverlay renderTo(Element element, boolean timeline) /*-{
         if(!this.chart) this.chart = {};
         this.chart.renderTo = element;
         if(timeline) {
@@ -275,16 +245,16 @@ public class HighchartConfig extends JavaScriptObject {
         return new $wnd.Highcharts.Chart(this);
     }-*/;
 
-    public native final void setChartsRenderingObserver(ChartConnector.ChartsRenderingObserver handler)
-    /*-{
-        @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"chart.events");
-        @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.series.events");
-        this.chart.events.load = $entry(function(e) {
-            return handler.@com.vaadin.addon.charts.shared.ChartConnector.ChartsRenderingObserver::onLoad()();
-        });
-        this.plotOptions.series.events.afterAnimate = $entry(function(e) {
-            return handler.@com.vaadin.addon.charts.shared.ChartConnector.ChartsRenderingObserver::onAfterSeriesAnimate()();
-        });
-    }-*/;
-
+  public final native void setChartsRenderingObserver(
+      ChartConnector.ChartsRenderingObserver handler)
+      /*-{
+          @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"chart.events");
+          @com.vaadin.addon.charts.client.ui.HighchartConfig::ensureObjectStructure(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this,"plotOptions.series.events");
+          this.chart.events.load = $entry(function(e) {
+              return handler.@com.vaadin.addon.charts.shared.ChartConnector.ChartsRenderingObserver::onLoad()();
+          });
+          this.plotOptions.series.events.afterAnimate = $entry(function(e) {
+              return handler.@com.vaadin.addon.charts.shared.ChartConnector.ChartsRenderingObserver::onAfterSeriesAnimate()();
+          });
+      }-*/ ;
 }

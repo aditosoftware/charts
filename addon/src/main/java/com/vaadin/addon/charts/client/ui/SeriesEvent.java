@@ -8,10 +8,10 @@ package com.vaadin.addon.charts.client.ui;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
@@ -22,28 +22,22 @@ import com.google.gwt.dom.client.NativeEvent;
 
 public class SeriesEvent extends JavaScriptObject {
 
-    protected SeriesEvent() {
+  protected SeriesEvent() {}
 
-    }
-
-    public native final void preventDefault()
-    /*-{
+  public final native void preventDefault() /*-{
         this.preventDefault();
     }-*/;
 
-    public native final HighchartSeries getSeries()
-    /*-{
+  public final native HighchartSeries getSeries() /*-{
          return this.target.series || this.target;
     }-*/;
 
-    /**
-     * Returns the series item index for the legend item that was clicked if
-     * possible.
-     * 
-     * @return Series item index.
-     */
-    public native final int getSeriesItemIndex()
-    /*-{   
+  /**
+   * Returns the series item index for the legend item that was clicked if possible.
+   *
+   * @return Series item index.
+   */
+  public final native int getSeriesItemIndex() /*-{
         if(typeof this.target.x === "undefined") {
           if(typeof this.target.index === "undefined") {
             return -1;
@@ -53,13 +47,12 @@ public class SeriesEvent extends JavaScriptObject {
         return this.target.x;
     }-*/;
 
-    /**
-     * Returns the native (actual event) that triggered this SeriesEvent
-     * @return the native browser event for this SeriesEvent
-     */
-    public native final NativeEvent getBrowserEvent()
-    /*-{
+  /**
+   * Returns the native (actual event) that triggered this SeriesEvent
+   *
+   * @return the native browser event for this SeriesEvent
+   */
+  public final native NativeEvent getBrowserEvent() /*-{
         return this.browserEvent;
     }-*/;
-
 }

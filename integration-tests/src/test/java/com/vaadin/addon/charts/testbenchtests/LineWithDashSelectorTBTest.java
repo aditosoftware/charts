@@ -4,13 +4,12 @@ import com.vaadin.addon.charts.examples.lineandscatter.LineWithDashSelector;
 
 public class LineWithDashSelectorTBTest extends AbstractSimpleScreenShotTestBenchTest {
 
-    protected String getTestViewName() {
-        return LineWithDashSelector.class.getSimpleName();
-    }
+  protected String getTestViewName() {
+    return LineWithDashSelector.class.getSimpleName();
+  }
 
-    @Override
-    protected String getPackageName() {
-        return "lineandscatter";
-    }
-
+  @Override
+  protected String getPackageName() {
+    return "lineandscatter";
+  }
 }

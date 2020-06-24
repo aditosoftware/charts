@@ -8,10 +8,10 @@ package com.vaadin.addon.charts.client.ui;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
@@ -20,33 +20,24 @@ package com.vaadin.addon.charts.client.ui;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
-/**
- * JS overlay for Chart chart. Needed for dynamic modifications, e.g.
- * adding/removing points.
- */
+/** JS overlay for Chart chart. Needed for dynamic modifications, e.g. adding/removing points. */
 public class HighchartJsOverlay extends JavaScriptObject {
 
-    protected HighchartJsOverlay() {
-    }
+  protected HighchartJsOverlay() {}
 
-    /**
-     * 
-     * @param doubleAttribute
-     */
-    public native final void addPoint(String pointJson, int seriesIndex,
-            boolean redraw, boolean shift)
-    /*-{
-        var newPointData = $wnd.eval('('+pointJson+')');
-        this.series[seriesIndex].addPoint(newPointData,redraw,shift);
-    }-*/;
+  /** @param doubleAttribute */
+  public final native void addPoint(
+      String pointJson, int seriesIndex, boolean redraw, boolean shift)
+      /*-{
+          var newPointData = $wnd.eval('('+pointJson+')');
+          this.series[seriesIndex].addPoint(newPointData,redraw,shift);
+      }-*/ ;
 
-    public native final void removePoint(int pointIndex, int seriesIndex)
-    /*-{
+  public final native void removePoint(int pointIndex, int seriesIndex) /*-{
         this.series[seriesIndex].data[pointIndex].remove();
     }-*/;
 
-    public native final void setSeriesEnabled(int index, boolean enabled)
-    /*-{
+  public final native void setSeriesEnabled(int index, boolean enabled) /*-{
         var ser = this.series[index];
         if(enabled) {
             ser.show();
@@ -55,79 +46,68 @@ public class HighchartJsOverlay extends JavaScriptObject {
         }
     }-*/;
 
-    public final native JsArray<HighchartSeries> getSeries()
-    /*-{
+  public final native JsArray<HighchartSeries> getSeries() /*-{
         return this.series;
     }-*/;
 
-    public final native JsArray<HighchartAxis> getxAxes()
-    /*-{
+  public final native JsArray<HighchartAxis> getxAxes() /*-{
          return this.xAxis;
     }-*/;
 
-    public final native JsArray<HighchartAxis> getyAxes()
-    /*-{
+  public final native JsArray<HighchartAxis> getyAxes() /*-{
          return this.yAxis;
     }-*/;
 
-    public final native JsArray<HighchartAxis> getzAxes()
-    /*-{
+  public final native JsArray<HighchartAxis> getzAxes() /*-{
          return this.zAxis;
     }-*/;
 
-    public final native JsArray<HighchartAxis> getColorAxes()
-    /*-{
+  public final native JsArray<HighchartAxis> getColorAxes() /*-{
          return this.colorAxis;
     }-*/;
 
-    public final native void setAnimation(boolean animation)
-    /*-{
+  public final native void setAnimation(boolean animation) /*-{
         this.animation = animation;
     }-*/;
 
-    public final native void setSize(int offsetWidth, int offsetHeight,
-            boolean animate, boolean clearUserSize)
-    /*-{
-        this.setSize(offsetWidth,offsetHeight,animate);
-        if(clearUserSize) {
-            this.hasUserSize = null;
-        }
-    }-*/;
+  public final native void setSize(
+      int offsetWidth, int offsetHeight, boolean animate, boolean clearUserSize)
+      /*-{
+          this.setSize(offsetWidth,offsetHeight,animate);
+          if(clearUserSize) {
+              this.hasUserSize = null;
+          }
+      }-*/ ;
 
-    public final native String getSubTitle()
-    /*-{
+  public final native String getSubTitle() /*-{
         if(this.subtitle==null) {
             return "";
         }
         return this.subtitle.textStr;
     }-*/;
-    public final native String getTitle()
-    /*-{
+
+  public final native String getTitle() /*-{
         if(this.title==null) {
             return "";
         }
         return this.title.textStr;
     }-*/;
 
-    public final native void setTitle(String title, String subtitle)
-    /*-{
+  public final native void setTitle(String title, String subtitle) /*-{
         this.setTitle(title,subtitle,true);
     }-*/;
-    public final native void destroy()
-    /*-{
+
+  public final native void destroy() /*-{
         this.destroy();
     }-*/;
 
-    public final native void addDrilldown(String series, int seriesIndex,
-            int pointIndex)
-    /*-{
+  public final native void addDrilldown(String series, int seriesIndex, int pointIndex) /*-{
         var newDrilldownData = $wnd.eval('('+series+')');
         var point = this.series[seriesIndex].data[pointIndex];
         this.addSeriesAsDrilldown(point,newDrilldownData);
     }-*/;
 
-    public final native void updateSeries(int seriesIndex, String seriesJson)
-    /*-{
+  public final native void updateSeries(int seriesIndex, String seriesJson) /*-{
         var seriesData = $wnd.eval('('+seriesJson+')');
         this.series[seriesIndex].setData(seriesData.data, true);
     }-*/;

@@ -1,39 +1,36 @@
 package com.vaadin.addon.charts.testbenchtests;
 
-import java.io.IOException;
-
+import com.vaadin.addon.charts.examples.dataprovider.ChartWithExternalDataProviderWithChangingData;
+import com.vaadin.testbench.By;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
-import com.vaadin.addon.charts.examples.dataprovider.ChartWithExternalDataProviderWithChangingData;
-import com.vaadin.testbench.By;
+import java.io.IOException;
 
 public class ChangingDataProviderTBTest extends AbstractParallelTest {
 
-    @Override
-    protected String getTestViewName() {
-        return ChartWithExternalDataProviderWithChangingData.class
-                .getSimpleName();
-    }
+  @Override
+  protected String getTestViewName() {
+    return ChartWithExternalDataProviderWithChangingData.class.getSimpleName();
+  }
 
-    @Test
-    public void test() throws IOException, AssertionError {
-        driver.get(getTestUrl());
+  @Test
+  public void test() throws IOException, AssertionError {
+    driver.get(getTestUrl());
 
-        waitForVaadin();
-        captureAndCompare("before");
+    waitForVaadin();
+    captureAndCompare("before");
 
-        WebElement element = driver.findElement(By.className("v-button"));
-        element.click();
-        element.click();
+    WebElement element = driver.findElement(By.className("v-button"));
+    element.click();
+    element.click();
 
-        waitForDynamicChanges();
-        captureAndCompare("after");
-    }
+    waitForDynamicChanges();
+    captureAndCompare("after");
+  }
 
-    @Override
-    protected String getPackageName() {
-        return "dataprovider";
-    }
-
+  @Override
+  protected String getPackageName() {
+    return "dataprovider";
+  }
 }

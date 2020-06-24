@@ -8,15 +8,14 @@ import com.vaadin.ui.Component;
 @SuppressWarnings("serial")
 public class GrayThemedAreaWithNegativeValues extends AreaWithNegativeValues {
 
-    @Override
-    public String getDescription() {
-        return "Gray themed: " + super.getDescription();
-    }
+  @Override
+  public String getDescription() {
+    return "Gray themed: " + super.getDescription();
+  }
 
-    @Override
-    protected Component getChart() {
-        ChartOptions.get().setTheme(new GrayTheme());
-        return super.getChart();
-    }
-
+  @Override
+  protected Component getChart() {
+    ChartOptions.get().setTheme(new GrayTheme());
+    return super.getChart();
+  }
 }

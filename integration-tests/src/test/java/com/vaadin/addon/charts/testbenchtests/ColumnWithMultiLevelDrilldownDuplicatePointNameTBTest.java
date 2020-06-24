@@ -1,70 +1,65 @@
 package com.vaadin.addon.charts.testbenchtests;
 
-import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.support.ui.ExpectedConditions.numberOfElementsToBe;
-import static org.openqa.selenium.support.ui.ExpectedConditions.textToBe;
-
-import java.io.IOException;
-
+import com.vaadin.addon.charts.examples.columnandbar.ColumnWithMultiLevelDrilldownDuplicatePointName;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.vaadin.addon.charts.examples.columnandbar.ColumnWithMultiLevelDrilldownDuplicatePointName;
+import java.io.IOException;
 
-public class ColumnWithMultiLevelDrilldownDuplicatePointNameTBTest
-        extends AbstractParallelTest {
+import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.support.ui.ExpectedConditions.numberOfElementsToBe;
+import static org.openqa.selenium.support.ui.ExpectedConditions.textToBe;
 
-    private static final String DRILLDOWN_LABEL_SELECTOR = ".highcharts-drilldown-axis-label";
-    private static final String DRILLDOWN_LABEL_SELECTOR_INDEX = DRILLDOWN_LABEL_SELECTOR
-            + ":nth-of-type(%s)";
+public class ColumnWithMultiLevelDrilldownDuplicatePointNameTBTest extends AbstractParallelTest {
 
-    @Override
-    protected String getTestViewName() {
-        return ColumnWithMultiLevelDrilldownDuplicatePointName.class
-                .getSimpleName();
-    }
+  private static final String DRILLDOWN_LABEL_SELECTOR = ".highcharts-drilldown-axis-label";
+  private static final String DRILLDOWN_LABEL_SELECTOR_INDEX =
+      DRILLDOWN_LABEL_SELECTOR + ":nth-of-type(%s)";
 
-    @Test
-    public void test() throws IOException, AssertionError {
-        driver.get(getTestUrl());
+  @Override
+  protected String getTestViewName() {
+    return ColumnWithMultiLevelDrilldownDuplicatePointName.class.getSimpleName();
+  }
 
-        waitForVaadin();
+  @Test
+  public void test() throws IOException, AssertionError {
+    driver.get(getTestUrl());
 
-        // Click first point
-        getPointLabel(1).click();
-        // Assert point with duplicate name is visible
-        waitUntil(textToBe(getSelectorForPointLabel(3), "Switzerland"));
+    waitForVaadin();
 
-        // Drill up
-        findElement(cssSelector(".highcharts-button")).click();
-        waitUntil(numberOfElementsToBe(getSelectorForPointLabels(), 6));
+    // Click first point
+    getPointLabel(1).click();
+    // Assert point with duplicate name is visible
+    waitUntil(textToBe(getSelectorForPointLabel(3), "Switzerland"));
 
-        // Click second point
-        getPointLabel(2).click();
+    // Drill up
+    findElement(cssSelector(".highcharts-button")).click();
+    waitUntil(numberOfElementsToBe(getSelectorForPointLabels(), 6));
 
-        // Assert only 4 points
-        waitUntil(numberOfElementsToBe(getSelectorForPointLabels(), 4));
-        // Assert point with duplicate name is visible
-        waitUntil(textToBe(getSelectorForPointLabel(3), "Switzerland"));
-    }
+    // Click second point
+    getPointLabel(2).click();
 
-    private WebElement getPointLabel(int index) {
-        return findElement(getSelectorForPointLabel(index));
-    }
+    // Assert only 4 points
+    waitUntil(numberOfElementsToBe(getSelectorForPointLabels(), 4));
+    // Assert point with duplicate name is visible
+    waitUntil(textToBe(getSelectorForPointLabel(3), "Switzerland"));
+  }
 
-    private By getSelectorForPointLabels() {
-        return cssSelector(DRILLDOWN_LABEL_SELECTOR);
-    }
+  private WebElement getPointLabel(int index) {
+    return findElement(getSelectorForPointLabel(index));
+  }
 
-    private By getSelectorForPointLabel(int index) {
-        return cssSelector(
-                String.format(DRILLDOWN_LABEL_SELECTOR_INDEX, index));
-    }
+  private By getSelectorForPointLabels() {
+    return cssSelector(DRILLDOWN_LABEL_SELECTOR);
+  }
 
-    @Override
-    protected String getPackageName() {
-        return "columnandbar";
-    }
+  private By getSelectorForPointLabel(int index) {
+    return cssSelector(String.format(DRILLDOWN_LABEL_SELECTOR_INDEX, index));
+  }
 
+  @Override
+  protected String getPackageName() {
+    return "columnandbar";
+  }
 }

@@ -21,31 +21,29 @@ import com.vaadin.shared.communication.ServerRpc;
 
 public interface ChartServerRpc extends ServerRpc {
 
-    void onChartClick(MouseEventDetails details);
+  void onChartClick(MouseEventDetails details);
 
-    void onChartDrilldown(DrilldownEventDetails details);
+  void onChartDrilldown(DrilldownEventDetails details);
 
-    void onChartDrillup();
+  void onChartDrillup();
 
-    void onPointClick(MouseEventDetails details, int seriesIndex,
-            String category, int pointIndex);
+  void onPointClick(MouseEventDetails details, int seriesIndex, String category, int pointIndex);
 
-    void onSelection(double selectionStart, double selectionEnd,
-            double valueStart, double valueEnd);
+  void onSelection(double selectionStart, double selectionEnd, double valueStart, double valueEnd);
 
-    void onLegendItemClick(int seriesIndex, int seriesItemIndex, MouseEventDetails mouseEventDetails);
+  void onLegendItemClick(int seriesIndex, int seriesItemIndex, MouseEventDetails mouseEventDetails);
 
-    void onCheckboxClick(boolean isChecked, int seriesIndex, int seriesItemIndex);
+  void onCheckboxClick(boolean isChecked, int seriesIndex, int seriesItemIndex);
 
-    void onSeriesHide(int seriesIndex, int seriesItemIndex);
+  void onSeriesHide(int seriesIndex, int seriesItemIndex);
 
-    void onSeriesShow(int seriesIndex, int seriesItemIndex);
+  void onSeriesShow(int seriesIndex, int seriesItemIndex);
 
-    void onXAxesExtremesChange(int axisIndex, double minimum, double maximum);
+  void onXAxesExtremesChange(int axisIndex, double minimum, double maximum);
 
-    void onYAxesExtremesChange(int axisIndex, double minimum, double maximum);
+  void onYAxesExtremesChange(int axisIndex, double minimum, double maximum);
 
-    void onPointSelect(int seriesIndex, String category, int pointIndex);
+  void onPointSelect(int seriesIndex, String category, int pointIndex);
 
-    void onPointUnselect(int seriesIndex, String category, int pointIndex);
+  void onPointUnselect(int seriesIndex, String category, int pointIndex);
 }

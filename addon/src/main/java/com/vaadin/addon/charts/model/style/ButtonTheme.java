@@ -8,10 +8,10 @@ package com.vaadin.addon.charts.model.style;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file licensing.txt distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <https://vaadin.com/license/cval-3>.
  * #L%
@@ -25,53 +25,56 @@ import com.vaadin.addon.charts.model.serializers.ButtonThemeWidthFilter;
 
 public class ButtonTheme extends AbstractConfigurationObject {
 
-    public final static Number DEFAULT_WIDTH = 32;
+  public static final Number DEFAULT_WIDTH = 32;
 
-    private Color fill;
-    private Color stroke;
-    @JsonProperty("stroke-width")
-    private Number strokeWidth;
-    private Style style;
-    @JsonInclude(value = Include.CUSTOM, valueFilter = ButtonThemeWidthFilter.class)
-    private Number width = DEFAULT_WIDTH;
+  private Color fill;
+  private Color stroke;
 
-    public Color getFill() {
-        return fill;
-    }
+  @JsonProperty("stroke-width")
+  private Number strokeWidth;
 
-    public void setFill(Color fill) {
-        this.fill = fill;
-    }
+  private Style style;
 
-    public Color getStroke() {
-        return stroke;
-    }
+  @JsonInclude(value = Include.CUSTOM, valueFilter = ButtonThemeWidthFilter.class)
+  private Number width = DEFAULT_WIDTH;
 
-    public void setStroke(Color stroke) {
-        this.stroke = stroke;
-    }
+  public Color getFill() {
+    return fill;
+  }
 
-    public Number getStrokeWidth() {
-        return strokeWidth;
-    }
+  public void setFill(Color fill) {
+    this.fill = fill;
+  }
 
-    public void setStrokeWidth(Number strokeWidth) {
-        this.strokeWidth = strokeWidth;
-    }
+  public Color getStroke() {
+    return stroke;
+  }
 
-    public Style getStyle() {
-        return style;
-    }
+  public void setStroke(Color stroke) {
+    this.stroke = stroke;
+  }
 
-    public void setStyle(Style style) {
-        this.style = style;
-    }
+  public Number getStrokeWidth() {
+    return strokeWidth;
+  }
 
-    public Number getWidth() {
-        return width;
-    }
+  public void setStrokeWidth(Number strokeWidth) {
+    this.strokeWidth = strokeWidth;
+  }
 
-    public void setWidth(Number width) {
-        this.width = width;
-    }
+  public Style getStyle() {
+    return style;
+  }
+
+  public void setStyle(Style style) {
+    this.style = style;
+  }
+
+  public Number getWidth() {
+    return width;
+  }
+
+  public void setWidth(Number width) {
+    this.width = width;
+  }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>com.vaadin</groupId>
         <artifactId>vaadin-charts-parent</artifactId>
@@ -233,7 +233,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
                     <httpConnector>
-                    <port>9998</port>
+                        <port>9998</port>
                     </httpConnector>
                     <scanIntervalSeconds>1</scanIntervalSeconds>
                     <useProvidedScope>true</useProvidedScope>
@@ -246,7 +246,8 @@
                                 implementation="org.eclipse.jetty.util.resource.ResourceCollection">
                             <resourcesAsCSV>${project.build.directory}/testwebapp</resourcesAsCSV>
                         </baseResource>
-                        <extraClasspath>target/classes;../addon/target/classes;../examples/target/classes</extraClasspath>
+                        <extraClasspath>target/classes;../addon/target/classes;../examples/target/classes
+                        </extraClasspath>
                     </webApp>
                     <scanTargets>
                         <scanTarget>../addon/target/classes</scanTarget>

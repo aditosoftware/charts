@@ -16,29 +16,25 @@ import com.vaadin.addon.charts.util.SVGGenerator;
 
 public class SwingDemo {
 
-    public static void display(Configuration conf) {
-        String svg = SVGGenerator.getInstance().generate(conf);
+  public static void display(Configuration conf) {
+    String svg = SVGGenerator.getInstance().generate(conf);
 
-        String parser = XMLResourceDescriptor.getXMLParserClassName();
+    String parser = XMLResourceDescriptor.getXMLParserClassName();
 
-        SVGDocumentFactory documentFactory = new SAXSVGDocumentFactory(parser,
-                true);
-        SVGDocument svgdoc;
-        try {
-            svgdoc = documentFactory.createSVGDocument(null, new StringReader(
-                    svg));
-            JSVGCanvas jsvgCanvas = new JSVGCanvas();
-            jsvgCanvas.setSVGDocument(svgdoc);
+    SVGDocumentFactory documentFactory = new SAXSVGDocumentFactory(parser, true);
+    SVGDocument svgdoc;
+    try {
+      svgdoc = documentFactory.createSVGDocument(null, new StringReader(svg));
+      JSVGCanvas jsvgCanvas = new JSVGCanvas();
+      jsvgCanvas.setSVGDocument(svgdoc);
 
-            JFrame f = new JFrame();
-            f.setSize(600, 400);
-            f.getContentPane().add(jsvgCanvas);
-            f.pack();
-            f.setVisible(true);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+      JFrame f = new JFrame();
+      f.setSize(600, 400);
+      f.getContentPane().add(jsvgCanvas);
+      f.pack();
+      f.setVisible(true);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
-
+  }
 }

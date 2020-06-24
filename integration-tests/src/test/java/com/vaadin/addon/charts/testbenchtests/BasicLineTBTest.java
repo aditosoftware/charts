@@ -4,13 +4,12 @@ import com.vaadin.addon.charts.examples.lineandscatter.BasicLine;
 
 public class BasicLineTBTest extends AbstractSimpleScreenShotTestBenchTest {
 
-    protected String getTestViewName() {
-        return BasicLine.class.getSimpleName();
-    }
+  protected String getTestViewName() {
+    return BasicLine.class.getSimpleName();
+  }
 
-    @Override
-    protected String getPackageName() {
-        return "lineandscatter";
-    }
-
+  @Override
+  protected String getPackageName() {
+    return "lineandscatter";
+  }
 }

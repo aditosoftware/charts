@@ -4,14 +4,13 @@ import com.vaadin.addon.charts.examples.lineandscatter.BasicLineWithNavigator;
 
 public class BasicLineWithNavigatorTBTest extends AbstractSimpleScreenShotTestBenchTest {
 
-    protected String getTestViewName() {
-        String simpleName = BasicLineWithNavigator.class.getSimpleName();
-        return simpleName;
-    }
+  protected String getTestViewName() {
+    String simpleName = BasicLineWithNavigator.class.getSimpleName();
+    return simpleName;
+  }
 
-    @Override
-    protected String getPackageName() {
-        return "lineandscatter";
-    }
-
+  @Override
+  protected String getPackageName() {
+    return "lineandscatter";
+  }
 }

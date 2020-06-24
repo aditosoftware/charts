@@ -4,13 +4,13 @@ import com.vaadin.addon.charts.examples.other.WindRose;
 
 public class WindroseTBTest extends AbstractSimpleScreenShotTestBenchTest {
 
-    @Override
-    protected String getTestViewName() {
-        return WindRose.class.getSimpleName();
-    }
+  @Override
+  protected String getTestViewName() {
+    return WindRose.class.getSimpleName();
+  }
 
-    @Override
-    protected String getPackageName() {
-        return "other";
-    }
+  @Override
+  protected String getPackageName() {
+    return "other";
+  }
 }

@@ -17,29 +17,21 @@ package com.vaadin.addon.charts.demoandtestapp;
 
 import com.vaadin.server.UIClassSelectionEvent;
 import com.vaadin.server.UIProvider;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
-import javax.servlet.annotation.WebInitParam;
-import javax.servlet.annotation.WebServlet;
-
-/**
- *
- */
+/** */
 @SuppressWarnings("serial")
 public class AbstractUIProviderImpl extends UIProvider {
 
-    @Override
-    public Class<? extends UI> getUIClass(UIClassSelectionEvent event) {
-        String name = (event.getRequest()).getPathInfo();
-        if (name.startsWith("/")) {
-            name = name.substring(1);
-        }
-        if (!"".equals(name) && !name.contains(".ico")
-                && name.matches("[A-Za-z/].*")) {
-            return TestUI.class;
-        }
-        return TListUi.class;
+  @Override
+  public Class<? extends UI> getUIClass(UIClassSelectionEvent event) {
+    String name = (event.getRequest()).getPathInfo();
+    if (name.startsWith("/")) {
+      name = name.substring(1);
     }
-
+    if (!"".equals(name) && !name.contains(".ico") && name.matches("[A-Za-z/].*")) {
+      return TestUI.class;
+    }
+    return TListUi.class;
+  }
 }
