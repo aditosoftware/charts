@@ -17,55 +17,46 @@ package com.vaadin.addon.charts;
  * #L%
  */
 
+import com.vaadin.addon.charts.model.DataSeries;
 import com.vaadin.addon.charts.model.DataSeriesItem;
-import com.vaadin.addon.charts.model.Series;
 
 import java.io.Serializable;
+import java.util.List;
 
 /** The DrilldownEvent class stores information on click events in drilldown points */
 public class DrilldownEvent implements Serializable {
-
-  private final Series series;
+  private final boolean isCategory;
+  private final DataSeries series;
   private final DataSeriesItem item;
-  private final int itemIndex;
+  private final List<DataSeriesItem> items;
 
   /**
    * Construct a ChartDrilldownEvent
    *
    * @param source
    * @param series
-   * @param details
    */
-  public DrilldownEvent(Chart source, Series series, DataSeriesItem item, int itemIndex) {
+  public DrilldownEvent (
+      Chart source, boolean isCategory, DataSeries series, DataSeriesItem item, List<DataSeriesItem> items) {
+    this.isCategory = isCategory;
     this.series = series;
     this.item = item;
-    this.itemIndex = itemIndex;
+    this.items = items;
   }
 
-  /**
-   * Returns the {@link #getItem()} series.
-   *
-   * @return
-   */
-  public Series getSeries() {
+  public boolean isCategory() {
+    return this.isCategory;
+  }
+
+  public DataSeries getSeries () {
     return series;
   }
 
-  /**
-   * Returns the item that was clicked
-   *
-   * @return
-   */
   public DataSeriesItem getItem() {
     return item;
   }
 
-  /**
-   * Returns the index of {@link #getItem()} in {@link #getSeries()}.
-   *
-   * @return
-   */
-  public int getItemIndex() {
-    return itemIndex;
+  public List<DataSeriesItem> getItems() {
+    return items;
   }
 }

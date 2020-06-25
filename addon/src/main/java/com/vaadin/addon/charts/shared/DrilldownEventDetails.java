@@ -18,11 +18,13 @@ package com.vaadin.addon.charts.shared;
  */
 
 import java.io.Serializable;
+import java.util.List;
 
 /** Helper class to store and transfer drilldown event details. */
 public class DrilldownEventDetails implements Serializable {
 
   private DrilldownPointDetails point;
+  private List<DrilldownPointDetails> points;
 
   public DrilldownEventDetails() {}
 
@@ -32,5 +34,13 @@ public class DrilldownEventDetails implements Serializable {
 
   public void setPoint(DrilldownPointDetails point) {
     this.point = point;
+  }
+
+  public List<DrilldownPointDetails> getPoints() {
+    return points;
+  }
+
+  public void setPoints(List<DrilldownPointDetails> points) {
+    this.points = points;
   }
 }

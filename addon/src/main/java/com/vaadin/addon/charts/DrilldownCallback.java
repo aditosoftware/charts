@@ -21,6 +21,7 @@ import com.vaadin.addon.charts.model.DataSeries;
 import com.vaadin.addon.charts.model.Series;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Handler interface for chart's drilldown callbacks.
@@ -44,5 +45,5 @@ public interface DrilldownCallback extends Serializable {
    * @return a {@link Series} instance to be used as drilldown for the point or <code>null</code> if
    *     nothing should be done
    */
-  public Series handleDrilldown(DrilldownEvent event);
+  public List<Series> handleDrilldown(DrilldownEvent event);
 }

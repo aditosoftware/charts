@@ -153,19 +153,18 @@ public class ChartData {
 
     series.addItemWithDrilldown(mainItem);
 
-    chart.setDrilldownCallback(
-        new DrilldownCallback() {
-          @Override
-          public Series handleDrilldown(DrilldownEvent event) {
-            DataSeries drillDownSeries = new DataSeries("MSIE versions");
+        chart.setDrilldownCallback(new DrilldownCallback() {
+            @Override
+            public List<Series> handleDrilldown(DrilldownEvent event) {
+                DataSeries drillDownSeries = new DataSeries("MSIE versions");
 
             drillDownSeries.add(new DataSeriesItem("MSIE 6.0", 10.85));
             drillDownSeries.add(new DataSeriesItem("MSIE 7.0", 7.35));
             drillDownSeries.add(new DataSeriesItem("MSIE 8.0", 33.06));
             drillDownSeries.add(new DataSeriesItem("MSIE 9.0", 2.81));
 
-            return drillDownSeries;
-          }
+                return List.of(drillDownSeries);
+            }
         });
   }
 

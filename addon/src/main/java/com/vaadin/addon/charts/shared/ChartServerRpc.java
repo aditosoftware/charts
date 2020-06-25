@@ -23,6 +23,13 @@ public interface ChartServerRpc extends ServerRpc {
 
   void onChartClick(MouseEventDetails details);
 
+  /**
+   * Will call the server-side RPC with the drilldown details. If the client should expect data is
+   * defined through the return value.
+   *
+   * @param details The details for the drilldown.
+   * @return If the client should expect data.
+   */
   void onChartDrilldown(DrilldownEventDetails details);
 
   void onChartDrillup();

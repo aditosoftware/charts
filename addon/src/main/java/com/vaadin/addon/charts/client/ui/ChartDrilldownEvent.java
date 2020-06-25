@@ -23,14 +23,22 @@ public class ChartDrilldownEvent extends JavaScriptObject {
   protected ChartDrilldownEvent() {}
 
   public final native boolean isCategory() /*-{
-        return this.points && this.points.length > 1;
-    }-*/;
+      return this.points && this.points.length > 1;
+  }-*/;
 
   public final native boolean hasDrilldownSeries() /*-{
-        return this.seriesOptions;
-    }-*/;
+      return this.seriesOptions;
+  }-*/;
 
   public final native HighchartPoint getPoint() /*-{
-        return this.point;
-    }-*/;
+      return this.point;
+  }-*/;
+
+  public final native HighchartPoint[] getPoints()/*-{
+      return this.points;
+  }-*/ ;
+
+  public final native int getCategory()/*-{
+    return this.category;
+  }-*/;
 }

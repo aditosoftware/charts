@@ -200,4 +200,12 @@ public class HighchartWidget extends Widget {
   public int getNumberOfSeries() {
     return jsOverlay.getSeries().length();
   }
+
+  public void showLoading () {
+    jsOverlay.showLoading();
+  }
+
+  public void hideLoading () {
+    jsOverlay.hideLoading();
+  }
 }

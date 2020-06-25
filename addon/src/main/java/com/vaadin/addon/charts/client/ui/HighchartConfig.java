@@ -116,6 +116,7 @@ public class HighchartConfig extends JavaScriptObject {
         if(!this.chart) this.chart = {};
         if(!this.chart.events) this.chart.events = {};
         this.chart.events.drilldown = $entry(function(e) {
+            console.log(e)
             return handler.@com.vaadin.addon.charts.client.ui.ChartDrilldownHandler::onDrilldown(Lcom/vaadin/addon/charts/client/ui/ChartDrilldownEvent;)(e);
         });
         this.chart.events.drillup = $entry(function(e) {

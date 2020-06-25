@@ -9,6 +9,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("serial")
@@ -149,9 +150,9 @@ public class ColumnWithLazyMultiLevelDrilldown extends AbstractVaadinChartExampl
         new DrilldownCallback() {
 
           @Override
-          public Series handleDrilldown(DrilldownEvent event) {
+          public List<Series> handleDrilldown(DrilldownEvent event) {
             log("DrilldownEvent: " + event.getItem().getId());
-            return getPointDrilldown(event.getItem());
+            return List.of(getPointDrilldown(event.getItem()));
           }
         });
 

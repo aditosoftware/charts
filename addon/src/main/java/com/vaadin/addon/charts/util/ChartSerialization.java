@@ -109,4 +109,13 @@ public class ChartSerialization implements Serializable {
       throw new RuntimeException("Error while serializing " + object.getClass().getSimpleName(), e);
     }
   }
+
+  public static String toJSON(Object object) {
+    try {
+      return jsonWriter.writeValueAsString(object);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+      throw new RuntimeException("Error while serializing " + object.getClass().getSimpleName(), e);
+    }
+  }
 }

@@ -23,6 +23,7 @@ import com.vaadin.addon.charts.events.AbstractSeriesEvent;
 import com.vaadin.addon.charts.events.*;
 import com.vaadin.addon.charts.model.*;
 import com.vaadin.addon.charts.shared.*;
+import com.vaadin.addon.charts.util.Pair;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.declarative.DesignContext;
@@ -35,6 +36,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.vaadin.addon.charts.util.ChartSerialization.toJSON;
 
@@ -173,9 +176,8 @@ public class Chart extends AbstractComponent {
     }
   }
 
-  private final class ChartServerRpcImplementation implements ChartServerRpc {
-
-    private Stack<Series> drilldownStack = new Stack<Series>();
+    private final class ChartServerRpcImplementation implements ChartServerRpc {
+        private final Stack<List<Series>> drilldownStack = new Stack<>();
 
     @Override
     public void onChartClick(MouseEventDetails details) {
@@ -185,26 +187,46 @@ public class Chart extends AbstractComponent {
 
     @Override
     public void onChartDrilldown(DrilldownEventDetails details) {
-      final int seriesIndex = details.getPoint().getSeriesIndex();
-      final int pointIndex = details.getPoint().getIndex();
-      Series series = resolveSeriesFor(seriesIndex);
-      DataSeriesItem item = null;
-      if (series instanceof DataSeries) {
-        DataSeries dataSeries = (DataSeries) series;
-        item = dataSeries.get(pointIndex);
-      }
-      final DrilldownEvent chartDrilldownEvent =
-          new DrilldownEvent(Chart.this, series, item, pointIndex);
+      Function<DrilldownPointDetails, Pair<DataSeries, DataSeriesItem>> pointResolver = it -> {
+        Series series = resolveSeriesFor(details.getPoint().getSeriesIndex());
+        if (series instanceof DataSeries) {
+          return new Pair<>((DataSeries) series,
+              ((DataSeries) series).get(details.getPoint().getIndex()));
+        }
+        return null;
+      };
+
+      Pair<DataSeries, DataSeriesItem> point = details.getPoint() != null
+          ? pointResolver.apply(details.getPoint())
+          : null;
+
+      List<DataSeriesItem> points = null;
+      if (details.getPoints() != null)
+        points = details.getPoints().stream()
+            .map(pointResolver)
+            .map(Pair::getValue)
+            .collect(Collectors.toList());
+
+      DrilldownEvent event = new DrilldownEvent(
+          Chart.this, details.getPoints() != null,
+          point != null ? point.getKey() : null,
+          point != null ? point.getValue() : null,
+          points);
 
       if (getDrilldownCallback() != null) {
-        Series drilldownSeries = getDrilldownCallback().handleDrilldown(chartDrilldownEvent);
+        List<Series> drilldownSeries = getDrilldownCallback().handleDrilldown(event);
+
         if (drilldownSeries != null) {
           drilldownStack.push(drilldownSeries);
           getRpcProxy(ChartClientRpc.class)
-              .addDrilldown(
-                  toJSON((AbstractConfigurationObject) drilldownSeries), seriesIndex, pointIndex);
+              .addDrilldown(toJSON(drilldownSeries),
+                  details.getPoint().getSeriesIndex(),
+                  details.getPoint().getIndex());
+          return;
         }
       }
+
+      getRpcProxy(ChartClientRpc.class).hideLoading();
     }
 
     @Override
@@ -308,7 +330,7 @@ public class Chart extends AbstractComponent {
       if (drilldownStack.isEmpty()) {
         series = getConfiguration().getSeries().get(seriesIndex);
       } else {
-        series = drilldownStack.peek();
+        series = drilldownStack.peek().get(seriesIndex);
       }
       return series;
     }

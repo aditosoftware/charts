@@ -20,6 +20,9 @@ package com.vaadin.addon.charts.client.ui;
 import com.vaadin.addon.charts.shared.DrilldownEventDetails;
 import com.vaadin.addon.charts.shared.DrilldownPointDetails;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** Helper class for constructing a DrilldownEventDetails object */
 public class DrilldownEventDetailsBuilder {
 
@@ -34,6 +37,15 @@ public class DrilldownEventDetailsBuilder {
       ChartDrilldownEvent event, HighchartWidget widget) {
     DrilldownEventDetails result = new DrilldownEventDetails();
     result.setPoint(buildDrilldownPoint(event.getPoint(), widget));
+
+    if (event.isCategory()) {
+      List<DrilldownPointDetails> points = new ArrayList<>();
+      for (HighchartPoint point : event.getPoints()) {
+        points.add(buildDrilldownPoint(point, widget));
+      }
+
+      result.setPoints(points);
+    }
 
     return result;
   }

@@ -34,6 +34,10 @@ import com.vaadin.client.ui.layout.ElementResizeListener;
 import com.vaadin.client.ui.window.WindowConnector;
 import com.vaadin.shared.ui.Connect;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 @SuppressWarnings("serial")
 @Connect(Chart.class)
 public class ChartConnector extends AbstractComponentConnector implements DeferredWorker {
@@ -219,6 +223,15 @@ public class ChartConnector extends AbstractComponentConnector implements Deferr
           }
 
           @Override
+          public void hideLoading() {
+            Scheduler.get()
+                .scheduleDeferred(
+                    () -> {
+                      getWidget().hideLoading();
+                    });
+          }
+
+          @Override
           public void addDrilldown(
               final String series, final int seriesIndex, final int pointIndex) {
             Scheduler.get()
@@ -226,6 +239,7 @@ public class ChartConnector extends AbstractComponentConnector implements Deferr
                     new ScheduledCommand() {
                       @Override
                       public void execute() {
+                        getWidget().hideLoading();
                         getWidget().addDrilldown(series, seriesIndex, pointIndex);
                       }
                     });
@@ -265,13 +279,26 @@ public class ChartConnector extends AbstractComponentConnector implements Deferr
     }
     cfg.setDrilldownHandler(
         new ChartDrilldownHandler() {
+          private Map<Integer, AtomicInteger> categoryCounter = new HashMap<>();
 
           @Override
           public void onDrilldown(ChartDrilldownEvent event) {
-            if (!event.isCategory() && !event.hasDrilldownSeries()) {
-              DrilldownEventDetails details =
-                  DrilldownEventDetailsBuilder.buildDrilldownEventDetails(event, getWidget());
+            DrilldownEventDetails details =
+                DrilldownEventDetailsBuilder.buildDrilldownEventDetails(event, getWidget());
 
+            boolean canSubmit = true;
+            if (event.isCategory()) {
+              if (!categoryCounter.containsKey(event.getCategory()))
+                categoryCounter.put(
+                    event.getCategory(), new AtomicInteger(event.getPoints().length));
+
+              int current = categoryCounter.get(event.getCategory()).decrementAndGet();
+              if (current == 0) categoryCounter.remove(event.getCategory());
+              else canSubmit = false;
+            }
+
+            getWidget().showLoading();
+            if (canSubmit) {
               rpc.onChartDrilldown(details);
             }
           }

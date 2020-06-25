@@ -1,5 +1,9 @@
 package com.vaadin.addon.charts.examples.columnandbar;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.DrilldownCallback;
 import com.vaadin.addon.charts.DrilldownEvent;
@@ -136,10 +140,10 @@ public class ColumnWithNativeLazyDrilldown extends AbstractVaadinChartExample {
     chart.setDrilldownCallback(
         new DrilldownCallback() {
 
-          @Override
-          public Series handleDrilldown(DrilldownEvent event) {
-            return getPointDrilldown(event.getItem());
-          }
+            @Override
+            public List<Series> handleDrilldown(DrilldownEvent event) {
+                return List.of(getPointDrilldown(event.getItem()));
+            }
         });
     return chart;
   }

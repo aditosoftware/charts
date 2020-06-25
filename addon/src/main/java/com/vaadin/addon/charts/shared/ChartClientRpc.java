@@ -81,4 +81,6 @@ public interface ChartClientRpc extends ClientRpc {
   void addDrilldown(String string, int seriesIndex, int pointIndex);
 
   void resetZoom(boolean redraw, boolean animate);
+
+  void hideLoading ();
 }

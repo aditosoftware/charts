@@ -1,25 +1,18 @@
 package com.vaadin.addon.charts.examples.columnandbar;
 
+import com.vaadin.addon.charts.Chart;
+import com.vaadin.addon.charts.examples.AbstractVaadinChartExample;
+import com.vaadin.addon.charts.model.*;
+import com.vaadin.ui.Component;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.vaadin.addon.charts.Chart;
-import com.vaadin.addon.charts.DrilldownCallback;
-import com.vaadin.addon.charts.DrilldownEvent;
-import com.vaadin.addon.charts.examples.AbstractVaadinChartExample;
-import com.vaadin.addon.charts.examples.SkipFromDemo;
-import com.vaadin.addon.charts.model.*;
-import com.vaadin.ui.Component;
-
-import java.util.HashMap;
-import java.util.Map;
-
-@SuppressWarnings("serial")
-@SkipFromDemo
-public class ColumnWithNativeLazyDrilldownMultipleSeries extends AbstractVaadinChartExample {
-
-  private Map<String, DataSeries> drillSeries;
+public class ColumnWithNativeLazyDrilldownMultiSeriesPerCategory
+    extends AbstractVaadinChartExample {
+  private Map<String, List<Series>> drillSeries;
   private Configuration conf;
 
   @Override
@@ -62,19 +55,23 @@ public class ColumnWithNativeLazyDrilldownMultipleSeries extends AbstractVaadinC
     createSeries(1);
     createSeries(2);
 
-    drillSeries = new HashMap<String, DataSeries>();
+    drillSeries = new HashMap<>();
 
-    addDrillSeries(1);
-    addDrillSeries(2);
+    addDrillSeries(1, 1);
+    addDrillSeries(1, 2);
+    addDrillSeries(2, 1);
+    addDrillSeries(2, 2);
+    addDrillSeries(3, 1);
+    addDrillSeries(3, 2);
 
-    chart.setDrilldownCallback(
-        new DrilldownCallback() {
-
-            @Override
-            public List<Series> handleDrilldown(DrilldownEvent event) {
-                return List.of(getPointDrilldown(event.getItem()));
-            }
-        });
+    chart.setDrilldownCallback(event -> {
+      try {
+        Thread.sleep(3000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      return getPointDrilldown(event.getItem());
+    });
     return chart;
   }
 
@@ -103,19 +100,27 @@ public class ColumnWithNativeLazyDrilldownMultipleSeries extends AbstractVaadinC
     conf.addSeries(series);
   }
 
-  private void addDrillSeries(int index) {
-    DataSeries drill = new DataSeries("MSIE versions" + index);
+  private void addDrillSeries(int index, int subIndex) {
+    DataSeries drill = new DataSeries("MSIE versions" + index + subIndex);
     String[] categories = new String[] {"MSIE 6.0", "MSIE 7.0", "MSIE 8.0", "MSIE 9.0"};
-    Number[] ys = new Number[] {10.85, 7.35, 33.06, 2.81};
+    Number[] ys =
+        new Number[] {10.85 + subIndex, 7.35 + subIndex, 33.06 + subIndex, 2.81 + subIndex};
     drill.setData(categories, ys);
-    drillSeries.put("MSIE" + index, drill);
+    if (!drillSeries.containsKey("MSIE" + index))
+      drillSeries.put("MSIE" + index, new ArrayList<>());
+    drillSeries.get("MSIE" + index).add(drill);
 
-    drill = new DataSeries("Firefox versions" + index);
+    drill = new DataSeries("Firefox versions" + index + subIndex);
     categories =
         new String[] {"Firefox 2.0", "Firefox 3.0", "Firefox 3.5", "Firefox 3.6", "Firefox 4.0"};
-    ys = new Number[] {0.20, 0.83, 1.58, 13.12, 5.43};
+    ys =
+        new Number[] {
+          0.20 + subIndex, 0.83 + subIndex, 1.58 + subIndex, 13.12 + subIndex, 5.43 + subIndex
+        };
     drill.setData(categories, ys);
-    drillSeries.put("Firefox" + index, drill);
+    if (!drillSeries.containsKey("Firefox" + index))
+      drillSeries.put("Firefox" + index, new ArrayList<>());
+    drillSeries.get("Firefox" + index).add(drill);
 
     drill = new DataSeries("Chrome versions" + index);
     categories =
@@ -129,9 +134,21 @@ public class ColumnWithNativeLazyDrilldownMultipleSeries extends AbstractVaadinC
           "Chrome 11.0",
           "Chrome 12.0"
         };
-    ys = new Number[] {0.12, 0.19, 0.12, 0.36, 0.32, 9.91, 0.50, 0.22};
+    ys =
+        new Number[] {
+          0.12 + subIndex,
+          0.19 + subIndex,
+          0.12 + subIndex,
+          0.36 + subIndex,
+          0.32 + subIndex,
+          9.91 + subIndex,
+          0.50 + subIndex,
+          0.22 + subIndex
+        };
     drill.setData(categories, ys);
-    drillSeries.put("Chrome" + index, drill);
+    if (!drillSeries.containsKey("Chrome" + index))
+      drillSeries.put("Chrome" + index, new ArrayList<>());
+    drillSeries.get("Chrome" + index).add(drill);
 
     drill = new DataSeries("Safari versions" + index);
     categories =
@@ -144,18 +161,31 @@ public class ColumnWithNativeLazyDrilldownMultipleSeries extends AbstractVaadinC
           "Safari 3.1",
           "Safari 4.1"
         };
-    ys = new Number[] {4.55, 1.42, 0.23, 0.21, 0.20, 0.19, 0.14};
+    ys =
+        new Number[] {
+          4.55 + subIndex,
+          1.42 + subIndex,
+          0.23 + subIndex,
+          0.21 + subIndex,
+          0.20 + subIndex,
+          0.19 + subIndex,
+          0.14 + subIndex
+        };
     drill.setData(categories, ys);
-    drillSeries.put("Safari" + index, drill);
+    if (!drillSeries.containsKey("Safari" + index))
+      drillSeries.put("Safari" + index, new ArrayList<>());
+    drillSeries.get("Safari" + index).add(drill);
 
     drill = new DataSeries("Opera versions" + index);
     categories = new String[] {"Opera 9.x", "Opera 10.x", "Opera 11.x"};
-    ys = new Number[] {0.12, 0.37, 1.65};
+    ys = new Number[] {0.12 + subIndex, 0.37 + subIndex, 1.65 + subIndex};
     drill.setData(categories, ys);
-    drillSeries.put("Opera" + index, drill);
+    if (!drillSeries.containsKey("Opera" + index))
+      drillSeries.put("Opera" + index, new ArrayList<>());
+    drillSeries.get("Opera" + index).add(drill);
   }
 
-  private Series getPointDrilldown(DataSeriesItem item) {
+  private List<Series> getPointDrilldown(DataSeriesItem item) {
     return drillSeries.get(item.getId());
   }
 }

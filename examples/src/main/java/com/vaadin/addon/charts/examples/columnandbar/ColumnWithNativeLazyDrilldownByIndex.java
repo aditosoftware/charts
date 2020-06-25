@@ -9,10 +9,10 @@ import com.vaadin.addon.charts.model.*;
 import com.vaadin.ui.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("serial")
-@SkipFromDemo
 public class ColumnWithNativeLazyDrilldownByIndex extends AbstractVaadinChartExample {
 
   private Map<String, DataSeries> drillSeries;
@@ -134,8 +134,8 @@ public class ColumnWithNativeLazyDrilldownByIndex extends AbstractVaadinChartExa
         new DrilldownCallback() {
 
           @Override
-          public Series handleDrilldown(DrilldownEvent event) {
-            return getPointDrilldown(event.getItemIndex());
+          public List<Series> handleDrilldown(DrilldownEvent event) {
+            return List.of(getPointDrilldown(0));
           }
         });
     return chart;
