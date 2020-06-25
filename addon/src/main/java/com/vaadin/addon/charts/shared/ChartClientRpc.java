@@ -82,5 +82,13 @@ public interface ChartClientRpc extends ClientRpc {
 
   void resetZoom(boolean redraw, boolean animate);
 
-  void hideLoading ();
+  /**
+   * Will show the loading indicator on the chart.
+   */
+  void showLoading();
+
+  /**
+   * Will hide the loading indicator on the chart.
+   */
+  void hideLoading();
 }

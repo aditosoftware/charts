@@ -232,6 +232,11 @@ public class ChartConnector extends AbstractComponentConnector implements Deferr
           }
 
           @Override
+          public void showLoading() {
+            Scheduler.get().scheduleDeferred(() -> getWidget().showLoading());
+          }
+
+          @Override
           public void addDrilldown(
               final String series, final int seriesIndex, final int pointIndex) {
             Scheduler.get()
@@ -279,6 +284,8 @@ public class ChartConnector extends AbstractComponentConnector implements Deferr
     }
     cfg.setDrilldownHandler(
         new ChartDrilldownHandler() {
+          // Represents a HashMap which is used as a counter to avoid
+          // sending too much events to the server-side.
           private Map<Integer, AtomicInteger> categoryCounter = new HashMap<>();
 
           @Override
@@ -286,19 +293,37 @@ public class ChartConnector extends AbstractComponentConnector implements Deferr
             DrilldownEventDetails details =
                 DrilldownEventDetailsBuilder.buildDrilldownEventDetails(event, getWidget());
 
+            // Indicator if the event can be sent to the server-side.
             boolean canSubmit = true;
+
+            // If the event is based on a click on a category label, we have
+            // to do some extra work, as Highcharts emits one event per point
+            // in the category. To avoid this behavior we need to check against
+            // an internal counter for the clicked category name.
             if (event.isCategory()) {
+              // If this is the first event from the category, we have to
+              // initialize the the map with an integer of the count of the
+              // points.
               if (!categoryCounter.containsKey(event.getCategory()))
                 categoryCounter.put(
                     event.getCategory(), new AtomicInteger(event.getPoints().length));
 
+              // Decrement the current counter for the category and get the current value.
               int current = categoryCounter.get(event.getCategory()).decrementAndGet();
+
+              // If this is the last emitted event of the category, we can
+              // remove the map entry and just continue and send the actual
+              // event to the server-side.
               if (current == 0) categoryCounter.remove(event.getCategory());
               else canSubmit = false;
             }
 
-            getWidget().showLoading();
             if (canSubmit) {
+              // Start the loading indicator before sending the rpc to the
+              // server-side to avoid confusion on the client-side.
+              getWidget().showLoading();
+
+              // Send the event to the server-side.
               rpc.onChartDrilldown(details);
             }
           }

@@ -36,7 +36,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.vaadin.addon.charts.util.ChartSerialization.toJSON;
@@ -176,8 +175,8 @@ public class Chart extends AbstractComponent {
     }
   }
 
-    private final class ChartServerRpcImplementation implements ChartServerRpc {
-        private final Stack<List<Series>> drilldownStack = new Stack<>();
+  private final class ChartServerRpcImplementation implements ChartServerRpc {
+    private final Stack<List<Series>> drilldownStack = new Stack<>();
 
     @Override
     public void onChartClick(MouseEventDetails details) {
@@ -187,46 +186,61 @@ public class Chart extends AbstractComponent {
 
     @Override
     public void onChartDrilldown(DrilldownEventDetails details) {
-      Function<DrilldownPointDetails, Pair<DataSeries, DataSeriesItem>> pointResolver = it -> {
-        Series series = resolveSeriesFor(details.getPoint().getSeriesIndex());
-        if (series instanceof DataSeries) {
-          return new Pair<>((DataSeries) series,
-              ((DataSeries) series).get(details.getPoint().getIndex()));
-        }
-        return null;
-      };
+      // Load the drilldown callback.
+      DrilldownCallback callback = getDrilldownCallback();
 
-      Pair<DataSeries, DataSeriesItem> point = details.getPoint() != null
-          ? pointResolver.apply(details.getPoint())
-          : null;
-
-      List<DataSeriesItem> points = null;
-      if (details.getPoints() != null)
-        points = details.getPoints().stream()
-            .map(pointResolver)
-            .map(Pair::getValue)
-            .collect(Collectors.toList());
-
-      DrilldownEvent event = new DrilldownEvent(
-          Chart.this, details.getPoints() != null,
-          point != null ? point.getKey() : null,
-          point != null ? point.getValue() : null,
-          points);
-
-      if (getDrilldownCallback() != null) {
-        List<Series> drilldownSeries = getDrilldownCallback().handleDrilldown(event);
-
-        if (drilldownSeries != null) {
-          drilldownStack.push(drilldownSeries);
-          getRpcProxy(ChartClientRpc.class)
-              .addDrilldown(toJSON(drilldownSeries),
-                  details.getPoint().getSeriesIndex(),
-                  details.getPoint().getIndex());
-          return;
-        }
+      // If there is no callback, we can just skip processing the event.
+      // Just send the hideLoading command to avoid a loading-lock on the client-side.
+      if (callback == null) {
+        getRpcProxy(ChartClientRpc.class).hideLoading();
+        return;
       }
 
-      getRpcProxy(ChartClientRpc.class).hideLoading();
+      // Resolve the single point if given. The point is always given, but
+      // differs when a category label has been clicked.
+      Pair<DataSeries, DataSeriesItem> point = null;
+      if (details.getPoints() != null) point = resolvePoint(details.getPoint());
+
+      // Resolve the multiple points. This is only set if a category has
+      // been clicked. This is therefore an indicator if a category has
+      // been clicked.
+      List<DataSeriesItem> points = null;
+      if (details.getPoints() != null)
+        points =
+            details.getPoints().stream()
+                .map(this::resolvePoint)
+                .map(Pair::getValue)
+                .collect(Collectors.toList());
+
+      // If the event is based on a category click, is indicated by the given
+      // points.
+      boolean isCategoryEvent = details.getPoints() != null;
+
+      // Build the server-side event based on the given point/points
+      DrilldownEvent event = new DrilldownEvent(
+              Chart.this,
+              isCategoryEvent,
+              point != null ? point.getKey() : null,
+              point != null ? point.getValue() : null,
+              points);
+
+      // Call the given callback with the built server-side event.
+      List<Series> drilldownSeries = getDrilldownCallback().handleDrilldown(event);
+
+      // The callback my return null if no drilldown data is available.
+      if (drilldownSeries != null) {
+        // Add the returned series to the drilldown stack.
+        drilldownStack.push(drilldownSeries);
+
+        // Add the returned series on the client-side chart.
+        getRpcProxy(ChartClientRpc.class).addDrilldown(
+                toJSON(drilldownSeries),
+                details.getPoint().getSeriesIndex(),
+                details.getPoint().getIndex());
+      } else {
+        // Hide the loading indicator.
+        getRpcProxy(ChartClientRpc.class).hideLoading();
+      }
     }
 
     @Override
@@ -243,7 +257,7 @@ public class Chart extends AbstractComponent {
         final int seriesIndex,
         final String category,
         final int pointIndex) {
-      Series series = resolveSeriesFor(seriesIndex);
+      Series series = resolveSeries(seriesIndex);
       final PointClickEvent pointClickEvent =
           new PointClickEvent(Chart.this, details, series, category, pointIndex);
       fireEvent(pointClickEvent);
@@ -263,7 +277,7 @@ public class Chart extends AbstractComponent {
     @Override
     public void onLegendItemClick(
         final int seriesIndex, int seriesItemIndex, MouseEventDetails details) {
-      Series series = resolveSeriesFor(seriesIndex);
+      Series series = resolveSeries(seriesIndex);
       final LegendItemClickEvent legendItemClickEvent =
           new LegendItemClickEvent(Chart.this, series, seriesItemIndex, details);
       fireEvent(legendItemClickEvent);
@@ -271,7 +285,7 @@ public class Chart extends AbstractComponent {
 
     @Override
     public void onCheckboxClick(boolean isChecked, final int seriesIndex, int seriesItemIndex) {
-      Series series = resolveSeriesFor(seriesIndex);
+      Series series = resolveSeries(seriesIndex);
       CheckboxClickEvent checkboxClickEvent =
           new CheckboxClickEvent(Chart.this, isChecked, series, seriesItemIndex);
       fireEvent(checkboxClickEvent);
@@ -279,14 +293,14 @@ public class Chart extends AbstractComponent {
 
     @Override
     public void onSeriesHide(int seriesIndex, int seriesItemIndex) {
-      Series series = resolveSeriesFor(seriesIndex);
+      Series series = resolveSeries(seriesIndex);
       SeriesHideEvent seriesHideEvent = new SeriesHideEvent(Chart.this, series, seriesItemIndex);
       fireEvent(seriesHideEvent);
     }
 
     @Override
     public void onSeriesShow(int seriesIndex, int seriesItemIndex) {
-      Series series = resolveSeriesFor(seriesIndex);
+      Series series = resolveSeries(seriesIndex);
       SeriesShowEvent seriesShowEvent = new SeriesShowEvent(Chart.this, series, seriesItemIndex);
       fireEvent(seriesShowEvent);
     }
@@ -309,14 +323,14 @@ public class Chart extends AbstractComponent {
 
     @Override
     public void onPointSelect(int seriesIndex, String category, int pointIndex) {
-      Series series = resolveSeriesFor(seriesIndex);
+      Series series = resolveSeries(seriesIndex);
       PointSelectEvent event = new PointSelectEvent(Chart.this, series, category, pointIndex);
       fireEvent(event);
     }
 
     @Override
     public void onPointUnselect(int seriesIndex, String category, int pointIndex) {
-      Series series = resolveSeriesFor(seriesIndex);
+      Series series = resolveSeries(seriesIndex);
       PointUnselectEvent event = new PointUnselectEvent(Chart.this, series, category, pointIndex);
       fireEvent(event);
     }
@@ -325,7 +339,14 @@ public class Chart extends AbstractComponent {
       drilldownStack.clear();
     }
 
-    private Series resolveSeriesFor(int seriesIndex) {
+    /**
+     * Will resolve the {@link Series} based on the given index. This will basically load the Series
+     * from the current configuration of the current top element of the drilldown stack.
+     *
+     * @param seriesIndex The index of the series to look up for.
+     * @return The series which matches the given index.
+     */
+    private Series resolveSeries(int seriesIndex) {
       Series series;
       if (drilldownStack.isEmpty()) {
         series = getConfiguration().getSeries().get(seriesIndex);
@@ -333,6 +354,31 @@ public class Chart extends AbstractComponent {
         series = drilldownStack.peek().get(seriesIndex);
       }
       return series;
+    }
+
+    /**
+     * Represents a function which is capable of resolve a given DrilldownPointDetails object into a
+     * pair of DataSeries and DataSeriesItem. This will return null if the Series is not a
+     * DataSeries.
+     *
+     * @param details The details of the clicked point.
+     * @return A pair, which contains the associated {@link DataSeries} and the actual {@link
+     *     DataSeriesItem}.
+     */
+    private Pair<DataSeries, DataSeriesItem> resolvePoint(DrilldownPointDetails details) {
+      // Resolve the series for the index of the clicked series.
+      Series series = resolveSeries(details.getSeriesIndex());
+
+      // We can only process instances of DataSeries.
+      if (series instanceof DataSeries) {
+        DataSeries cSeries = (DataSeries) series;
+        // Build the pair which contains the series object and the
+        // point within the series.
+        return new Pair<>(cSeries, cSeries.get(details.getIndex()));
+      }
+
+      // Return null by default.
+      return null;
     }
   }
 
