@@ -199,7 +199,7 @@ public class Chart extends AbstractComponent {
       // Resolve the single point if given. The point is always given, but
       // differs when a category label has been clicked.
       Pair<DataSeries, DataSeriesItem> point = null;
-      if (details.getPoints() != null) point = resolvePoint(details.getPoint());
+      if (details.getPoint() != null) point = resolvePoint(details.getPoint());
 
       // Resolve the multiple points. This is only set if a category has
       // been clicked. This is therefore an indicator if a category has

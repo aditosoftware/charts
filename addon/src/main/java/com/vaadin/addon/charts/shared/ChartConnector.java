@@ -34,10 +34,6 @@ import com.vaadin.client.ui.layout.ElementResizeListener;
 import com.vaadin.client.ui.window.WindowConnector;
 import com.vaadin.shared.ui.Connect;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 @SuppressWarnings("serial")
 @Connect(Chart.class)
 public class ChartConnector extends AbstractComponentConnector implements DeferredWorker {
@@ -284,10 +280,6 @@ public class ChartConnector extends AbstractComponentConnector implements Deferr
     }
     cfg.setDrilldownHandler(
         new ChartDrilldownHandler() {
-          // Represents a HashMap which is used as a counter to avoid
-          // sending too much events to the server-side.
-          private Map<Integer, AtomicInteger> categoryCounter = new HashMap<>();
-
           @Override
           public void onDrilldown(ChartDrilldownEvent event) {
             DrilldownEventDetails details =
@@ -298,25 +290,9 @@ public class ChartConnector extends AbstractComponentConnector implements Deferr
 
             // If the event is based on a click on a category label, we have
             // to do some extra work, as Highcharts emits one event per point
-            // in the category. To avoid this behavior we need to check against
-            // an internal counter for the clicked category name.
-            if (event.isCategory()) {
-              // If this is the first event from the category, we have to
-              // initialize the the map with an integer of the count of the
-              // points.
-              if (!categoryCounter.containsKey(event.getCategory()))
-                categoryCounter.put(
-                    event.getCategory(), new AtomicInteger(event.getPoints().length));
-
-              // Decrement the current counter for the category and get the current value.
-              int current = categoryCounter.get(event.getCategory()).decrementAndGet();
-
-              // If this is the last emitted event of the category, we can
-              // remove the map entry and just continue and send the actual
-              // event to the server-side.
-              if (current == 0) categoryCounter.remove(event.getCategory());
-              else canSubmit = false;
-            }
+            // in the category. To avoid this behavior we need to make sure
+            // only the first point will be sent to the server-side.
+            if (event.isCategory() && details.getPoint().getSeriesIndex() != 0) canSubmit = false;
 
             if (canSubmit) {
               // Start the loading indicator before sending the rpc to the

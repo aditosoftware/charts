@@ -64,19 +64,19 @@ public class ColumnWithNativeLazyDrilldownMultiSeriesPerCategory
     addDrillSeries(3, 1);
     addDrillSeries(3, 2);
 
-    chart.setDrilldownCallback(event -> {
-      try {
-        Thread.sleep(3000);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      return getPointDrilldown(event.getItem());
-    });
+    chart.setDrilldownCallback(
+        event -> {
+          List<Series> series = getPointDrilldown(event.getItem());
+
+          if (event.getItems() != null) return series;
+          else return series.subList(0, 1);
+        });
     return chart;
   }
 
   private void createSeries(int index) {
     DataSeries series = new DataSeries();
+    series.setId(index + "");
     DataSeriesItem item = new DataSeriesItem("MSIE", 55.11 - index - index - index);
     item.setId("MSIE" + index);
     series.addItemWithDrilldown(item);
@@ -106,6 +106,7 @@ public class ColumnWithNativeLazyDrilldownMultiSeriesPerCategory
     Number[] ys =
         new Number[] {10.85 + subIndex, 7.35 + subIndex, 33.06 + subIndex, 2.81 + subIndex};
     drill.setData(categories, ys);
+    drill.setId(subIndex + "");
     if (!drillSeries.containsKey("MSIE" + index))
       drillSeries.put("MSIE" + index, new ArrayList<>());
     drillSeries.get("MSIE" + index).add(drill);
@@ -118,6 +119,7 @@ public class ColumnWithNativeLazyDrilldownMultiSeriesPerCategory
           0.20 + subIndex, 0.83 + subIndex, 1.58 + subIndex, 13.12 + subIndex, 5.43 + subIndex
         };
     drill.setData(categories, ys);
+    drill.setId(subIndex + "");
     if (!drillSeries.containsKey("Firefox" + index))
       drillSeries.put("Firefox" + index, new ArrayList<>());
     drillSeries.get("Firefox" + index).add(drill);
@@ -146,6 +148,7 @@ public class ColumnWithNativeLazyDrilldownMultiSeriesPerCategory
           0.22 + subIndex
         };
     drill.setData(categories, ys);
+    drill.setId(subIndex + "");
     if (!drillSeries.containsKey("Chrome" + index))
       drillSeries.put("Chrome" + index, new ArrayList<>());
     drillSeries.get("Chrome" + index).add(drill);
@@ -172,6 +175,7 @@ public class ColumnWithNativeLazyDrilldownMultiSeriesPerCategory
           0.14 + subIndex
         };
     drill.setData(categories, ys);
+    drill.setId(subIndex + "");
     if (!drillSeries.containsKey("Safari" + index))
       drillSeries.put("Safari" + index, new ArrayList<>());
     drillSeries.get("Safari" + index).add(drill);
@@ -180,6 +184,7 @@ public class ColumnWithNativeLazyDrilldownMultiSeriesPerCategory
     categories = new String[] {"Opera 9.x", "Opera 10.x", "Opera 11.x"};
     ys = new Number[] {0.12 + subIndex, 0.37 + subIndex, 1.65 + subIndex};
     drill.setData(categories, ys);
+    drill.setId(subIndex + "");
     if (!drillSeries.containsKey("Opera" + index))
       drillSeries.put("Opera" + index, new ArrayList<>());
     drillSeries.get("Opera" + index).add(drill);

@@ -103,10 +103,17 @@ public class HighchartJsOverlay extends JavaScriptObject {
 
   public final native void addDrilldown(String series, int seriesIndex, int pointIndex) /*-{
     var newDrilldownData = $wnd.eval('('+series+')');
-    var point = this.series[seriesIndex].data[pointIndex];
-    console.log(this.series[seriesIndex].data)
-    for (var i = 0; i < newDrilldownData.length;i++)
-        this.addSingleSeriesAsDrilldown(point, newDrilldownData[i]);
+    var mapping = [];
+
+    for(var i = 0; i < newDrilldownData.length;i++) {
+      var seriesOf = this.series[seriesIndex + i];
+      if (seriesOf)
+        mapping.push([seriesOf.data[pointIndex], newDrilldownData[i]])
+    }
+    for (var i = 0; i < mapping.length; i++) {
+      var data = mapping[i];
+      this.addSingleSeriesAsDrilldown(data[0], data[1]);
+    }
 
     this.applyDrilldown();
     }-*/;
