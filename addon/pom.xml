@@ -14,6 +14,20 @@
     <name>Vaadin Charts Addon</name>
     <inceptionYear>2012</inceptionYear>
 
+    <distributionManagement>
+        <repository>
+            <id>adito.m2</id>
+            <name>releases</name>
+            <url>${repository.releases}</url>
+        </repository>
+        <snapshotRepository>
+            <id>adito.m2</id>
+            <name>snapshots</name>
+            <url>${repository.snapshots}</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
         <resources>
             <!-- These are also needed for the sources required by the GWT compiler
