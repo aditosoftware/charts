@@ -13,12 +13,26 @@
     <inceptionYear>2014</inceptionYear>
     <description>Parent project for Charts addon, demos and packaging</description>
 
+    <distributionManagement>
+        <repository>
+            <id>adito.m2</id>
+            <name>releases</name>
+            <url>${repository.releases}</url>
+        </repository>
+        <snapshotRepository>
+            <id>adito.m2</id>
+            <name>snapshots</name>
+            <url>${repository.snapshots}</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
     <modules>
         <module>addon</module>
         <module>compatibility-addon</module>
         <module>examples</module>
         <module>integration-tests</module>
-        <module>demo</module>
+        <module>demo</module>le
         <module>book-examples</module>
         <module>directory</module>
     </modules>
@@ -51,7 +65,7 @@
         </license>
     </licenses>
 
-    <distributionManagement>
+    <!--<distributionManagement>
         <snapshotRepository>
             <id>vaadin-snapshots</id>
             <name>Vaadin snapshot repository</name>
@@ -62,7 +76,7 @@
             <name>Vaadin add-ons repository</name>
             <url>https://tools.vaadin.com/nexus/content/repositories/vaadin-addons</url>
         </repository>
-    </distributionManagement>
+    </distributionManagement>-->
 
     <dependencyManagement>
         <dependencies>
