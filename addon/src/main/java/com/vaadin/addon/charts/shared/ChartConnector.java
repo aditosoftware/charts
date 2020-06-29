@@ -227,7 +227,12 @@ public class ChartConnector extends AbstractComponentConnector implements Deferr
                     });
           }
 
-          @Override
+            @Override
+            public void exportChart(String options) {
+              Scheduler.get().scheduleDeferred(() -> getWidget().exportChart(options));
+            }
+
+            @Override
           public void showLoading() {
             Scheduler.get().scheduleDeferred(() -> getWidget().showLoading());
           }

@@ -17,6 +17,7 @@ package com.vaadin.addon.charts.shared;
  * #L%
  */
 
+import com.vaadin.addon.charts.model.Configuration;
 import com.vaadin.shared.communication.ClientRpc;
 
 public interface ChartClientRpc extends ClientRpc {
@@ -91,4 +92,12 @@ public interface ChartClientRpc extends ClientRpc {
    * Will hide the loading indicator on the chart.
    */
   void hideLoading();
+
+  /**
+   * Will export the current chart on the client side using the given options. The given options override the
+   * set properties from the exporting property in the chart configuration {@link Configuration#getExporting()}.
+   *
+   * @param options The options to use for the export.
+   */
+  void exportChart (String options);
 }

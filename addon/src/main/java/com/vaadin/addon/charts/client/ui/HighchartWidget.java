@@ -208,4 +208,8 @@ public class HighchartWidget extends Widget {
   public void hideLoading () {
     jsOverlay.hideLoading();
   }
+
+  public void exportChart (String options) {
+    jsOverlay.exportChart(options);
+  }
 }
