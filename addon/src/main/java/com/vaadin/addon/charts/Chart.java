@@ -615,6 +615,15 @@ public class Chart extends AbstractComponent {
   }
 
   /**
+   * Will export the current chart on the client-side with the given options. The options override the
+   * default exporting options defined in the {@link this#getConfiguration()}.
+   * @param options The options to use for the export.
+   */
+  public void exportChart(Exporting options) {
+    getRpcProxy(ChartClientRpc.class).exportChart(toJSON(options));
+  }
+
+  /**
    * Adds chart click listener, which will be notified of clicks on the chart area
    *
    * @param listener
