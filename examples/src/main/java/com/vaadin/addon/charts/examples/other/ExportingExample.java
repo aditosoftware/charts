@@ -4,6 +4,7 @@ import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.examples.columnandbar.DualAxesLineAndColumn;
 import com.vaadin.addon.charts.model.Exporting;
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -47,6 +48,13 @@ public class ExportingExample extends DualAxesLineAndColumn {
     // chart.getConfiguration().setExporting(true);
 
     verticalLayout.addComponent(chart);
+
+    Button exportButton = new Button("Export with external button");
+    Exporting expo = new Exporting();
+    exporting.setType("application/pdf");
+    exportButton.addClickListener(clickEvent -> chart.exportChart(expo));
+    verticalLayout.addComponent(exportButton);
+
     return verticalLayout;
   }
 }
