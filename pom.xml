@@ -4,7 +4,7 @@
 
     <groupId>com.vaadin</groupId>
     <artifactId>vaadin-charts-parent</artifactId>
-    <version>4.2.1.adito</version>
+    <version>4.2.2.adito</version>
 
     <packaging>pom</packaging>
 
