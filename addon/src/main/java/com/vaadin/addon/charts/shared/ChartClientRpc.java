@@ -83,21 +83,29 @@ public interface ChartClientRpc extends ClientRpc {
 
   void resetZoom(boolean redraw, boolean animate);
 
-  /**
-   * Will show the loading indicator on the chart.
-   */
+  /** Will show the loading indicator on the chart. */
   void showLoading();
 
-  /**
-   * Will hide the loading indicator on the chart.
-   */
+  /** Will hide the loading indicator on the chart. */
   void hideLoading();
 
   /**
-   * Will export the current chart on the client side using the given options. The given options override the
-   * set properties from the exporting property in the chart configuration {@link Configuration#getExporting()}.
+   * Will export the current chart on the client side using the given options. The given options
+   * override the set properties from the exporting property in the chart configuration {@link
+   * Configuration#getExporting()}.
    *
    * @param options The options to use for the export.
    */
-  void exportChart (String options);
+  void exportChart(String options);
+
+  /**
+   * Will export the current chart on the client side using the given options. The given options
+   * override the set properties from the exporting property in the chart configuration {@link
+   * Configuration#getExporting()}. The difference between this method and {@link
+   * this#exportChart(String)} is this method exports fully on the client side without any backend
+   * server.
+   *
+   * @param options The options to use for the export.
+   */
+  void exportChartLocal(String options);
 }

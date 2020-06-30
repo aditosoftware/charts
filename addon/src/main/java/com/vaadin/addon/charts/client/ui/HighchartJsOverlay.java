@@ -131,11 +131,19 @@ public class HighchartJsOverlay extends JavaScriptObject {
     this.hideLoading();
   }-*/;
 
-  public final native void exportChart (String options) /*-{
+  public final native void exportChart(String options) /*-{
     var opts = null;
     if (options)
         opts = JSON.parse(options)
 
     this.exportChart(opts);
+  }-*/;
+
+  public final native void exportChartLocal(String options) /*-{
+    var opts = null;
+    if (options)
+      opts = JSON.parse(options)
+
+    this.exportChartLocal(opts);
   }-*/;
 }

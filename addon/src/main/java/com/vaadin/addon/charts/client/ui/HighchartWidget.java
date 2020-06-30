@@ -201,15 +201,19 @@ public class HighchartWidget extends Widget {
     return jsOverlay.getSeries().length();
   }
 
-  public void showLoading () {
+  public void showLoading() {
     jsOverlay.showLoading();
   }
 
-  public void hideLoading () {
+  public void hideLoading() {
     jsOverlay.hideLoading();
   }
 
-  public void exportChart (String options) {
+  public void exportChart(String options) {
     jsOverlay.exportChart(options);
+  }
+
+  public void exportChartLocal(String options) {
+    jsOverlay.exportChartLocal(options);
   }
 }

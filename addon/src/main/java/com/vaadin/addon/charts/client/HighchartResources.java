@@ -42,6 +42,9 @@ public interface HighchartResources extends ClientBundle {
   @Source("exporting.js")
   TextResource exporting();
 
+  @Source("offline-exporting.js")
+  TextResource offlineExporting();
+
   @Source("highcharts-more.js")
   TextResource highchartsMore();
 
