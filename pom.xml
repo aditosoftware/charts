@@ -32,7 +32,7 @@
         <module>compatibility-addon</module>
         <module>examples</module>
         <module>integration-tests</module>
-        <module>demo</module>le
+        <module>demo</module>
         <module>book-examples</module>
         <module>directory</module>
     </modules>
