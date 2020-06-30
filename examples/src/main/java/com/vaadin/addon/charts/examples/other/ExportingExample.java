@@ -34,7 +34,7 @@ public class ExportingExample extends DualAxesLineAndColumn {
     Exporting exporting = new Exporting(true);
 
     // One can customize the filename
-    exporting.setFilename("mychartfile");
+        exporting.setFilename("mychartfile");
 
     // Exporting is by default done on highcharts public servers, but you
     // can also use your own server
@@ -49,11 +49,17 @@ public class ExportingExample extends DualAxesLineAndColumn {
 
     verticalLayout.addComponent(chart);
 
-    Button exportButton = new Button("Export with external button");
-    Exporting expo = new Exporting();
-    exporting.setType("application/pdf");
-    exportButton.addClickListener(clickEvent -> chart.exportChart(expo));
-    verticalLayout.addComponent(exportButton);
+    Button exportButtonBackend = new Button("Export with backend");
+    Exporting backendExport = new Exporting();
+    exporting.setType("image/png");
+    exportButtonBackend.addClickListener(clickEvent -> chart.exportChart(backendExport));
+    verticalLayout.addComponent(exportButtonBackend);
+
+    Button exportButtonLocal = new Button("Export with local");
+    Exporting localExport = new Exporting();
+    exporting.setType("image/png");
+    exportButtonLocal.addClickListener(clickEvent -> chart.exportChartLocal(localExport));
+    verticalLayout.addComponent(exportButtonLocal);
 
     return verticalLayout;
   }
