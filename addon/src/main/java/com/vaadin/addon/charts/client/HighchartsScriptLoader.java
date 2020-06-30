@@ -56,6 +56,7 @@ public class HighchartsScriptLoader {
       inject(HighchartResources.INSTANCE.noData().getText());
       inject(HighchartResources.INSTANCE.funnel().getText());
       inject(HighchartResources.INSTANCE.exporting().getText());
+      inject(HighchartResources.INSTANCE.offlineExporting().getText());
       inject(HighchartResources.INSTANCE.defaultTheme().getText());
       inject(HighchartResources.INSTANCE.highcharts3d().getText());
       inject(HighchartResources.INSTANCE.solidGauge().getText());

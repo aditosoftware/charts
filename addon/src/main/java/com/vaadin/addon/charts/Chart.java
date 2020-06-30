@@ -217,7 +217,8 @@ public class Chart extends AbstractComponent {
       boolean isCategoryEvent = details.getPoints() != null;
 
       // Build the server-side event based on the given point/points
-      DrilldownEvent event = new DrilldownEvent(
+      DrilldownEvent event =
+          new DrilldownEvent(
               Chart.this,
               isCategoryEvent,
               point != null ? point.getKey() : null,
@@ -233,7 +234,8 @@ public class Chart extends AbstractComponent {
         drilldownStack.push(drilldownSeries);
 
         // Add the returned series on the client-side chart.
-        getRpcProxy(ChartClientRpc.class).addDrilldown(
+        getRpcProxy(ChartClientRpc.class)
+            .addDrilldown(
                 toJSON(drilldownSeries),
                 details.getPoint().getSeriesIndex(),
                 details.getPoint().getIndex());
@@ -615,12 +617,25 @@ public class Chart extends AbstractComponent {
   }
 
   /**
-   * Will export the current chart on the client-side with the given options. The options override the
-   * default exporting options defined in the {@link this#getConfiguration()}.
+   * Will export the current chart on the client-side with the given options. The options override
+   * the default exporting options defined in the {@link this#getConfiguration()}.
+   *
    * @param options The options to use for the export.
    */
   public void exportChart(Exporting options) {
     getRpcProxy(ChartClientRpc.class).exportChart(toJSON(options));
+  }
+
+  /**
+   * Will export the current chart on the client side with the given options. The options override
+   * the default exporting options defined in the {@link this#getConfiguration()}. The difference
+   * between this method and {@link this#exportChart(Exporting)} is that this method exports fully
+   * on the client side without an backend server.
+   *
+   * @param options The options to use for the export.
+   */
+  public void exportChartLocal(Exporting options) {
+    getRpcProxy(ChartClientRpc.class).exportChartLocal(toJSON(options));
   }
 
   /**
