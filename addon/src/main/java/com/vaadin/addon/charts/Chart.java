@@ -382,6 +382,12 @@ public class Chart extends AbstractComponent {
       // Return null by default.
       return null;
     }
+
+    /** Will reset the current stack which represents the drilldown for the chart */
+    public void resetDrilldownStack() {
+      // Just clear the stack here.
+      drilldownStack.clear();
+    }
   }
 
   private static final Method chartClickMethod =
@@ -528,6 +534,7 @@ public class Chart extends AbstractComponent {
    */
   public void drawChart(String jsonConfig) {
     setJsonConfig(jsonConfig);
+    srvRpcImpl.resetDrilldownStack();
     forceStateChange();
   }
 
@@ -595,6 +602,7 @@ public class Chart extends AbstractComponent {
    */
   public void drawChart(Configuration configuration) {
     setConfiguration(configuration);
+    srvRpcImpl.resetDrilldownStack();
     forceStateChange();
   }
 
