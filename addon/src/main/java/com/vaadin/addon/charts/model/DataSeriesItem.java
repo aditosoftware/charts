@@ -23,6 +23,7 @@ import com.vaadin.addon.charts.model.style.Color;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Map;
 
 /** The DataSeriesItem class represents a single entry in a {@link DataSeries}. */
 @SuppressWarnings("serial")
@@ -35,6 +36,7 @@ public class DataSeriesItem extends AbstractSeriesItem {
   private Object drilldown;
   private DataLabels dataLabels;
   private String cursor;
+  private Map<String, String> parameters;
 
   /*
    * Flag to indicate if this item can be passed in optimized form to
@@ -350,5 +352,13 @@ public class DataSeriesItem extends AbstractSeriesItem {
   public void setCursor(String cursor) {
     this.cursor = cursor;
     makeCustomized();
+  }
+
+  public Map<String, String> getParameters() {
+    return parameters;
+  }
+
+  public void setParameters(Map<String, String> pParameters) {
+    parameters = pParameters;
   }
 }
