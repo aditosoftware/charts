@@ -20,6 +20,9 @@ package com.vaadin.addon.charts.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vaadin.addon.charts.model.style.Color;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /** A collection of style attributes for the {@link DrillUpButton} */
 public class DrillUpButtonTheme extends AbstractConfigurationObject {
 
@@ -29,6 +32,9 @@ public class DrillUpButtonTheme extends AbstractConfigurationObject {
 
   @JsonProperty("stroke-width")
   private Number strokeWidth;
+
+  private Map<String, DrillUpButtonThemeState> states;
+  private DrillUpButtonThemeStyle style;
 
   /**
    * @see #setFill(Color)
@@ -96,5 +102,34 @@ public class DrillUpButtonTheme extends AbstractConfigurationObject {
    */
   public void setR(Number r) {
     this.r = r;
+  }
+
+  public void setState(String name, DrillUpButtonThemeState state) {
+    if (states == null) states = new HashMap<>();
+
+    if (state == null) states.remove(name);
+    else states.put(name, state);
+  }
+
+  public DrillUpButtonThemeState getState(String name) {
+    return states.get(name);
+  }
+
+  public Map<String, DrillUpButtonThemeState> getStates() {
+    return states;
+  }
+
+  public void setStates(Map<String, DrillUpButtonThemeState> states) {
+    this.states = states;
+  }
+
+  public DrillUpButtonThemeStyle getStyle() {
+    if (style == null) style = new DrillUpButtonThemeStyle();
+
+    return style;
+  }
+
+  public void setStyle(DrillUpButtonThemeStyle style) {
+    this.style = style;
   }
 }
