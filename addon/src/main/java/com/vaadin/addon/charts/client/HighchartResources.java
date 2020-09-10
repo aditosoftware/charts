@@ -30,7 +30,7 @@ import com.google.gwt.resources.client.TextResource;
 public interface HighchartResources extends ClientBundle {
   public static final HighchartResources INSTANCE = GWT.create(HighchartResources.class);
 
-  @Source("highstock.js")
+  @Source("highcharts.js")
   TextResource highstock();
 
   @Source("no-data-to-display.js")
