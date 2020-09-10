@@ -91,6 +91,7 @@ public class XAxis extends Axis {
   private Boolean ordinal;
   private Number range;
   private Number pane;
+  private boolean uniqueNames;
 
   public XAxis() {}
 
@@ -1104,6 +1105,14 @@ public class XAxis extends Axis {
       throw new IllegalStateException("Pane must be attached to configuration");
     }
     this.pane = pane.getPaneIndex();
+  }
+
+  public boolean getUniqueNames() {
+    return uniqueNames;
+  }
+
+  public void setUniqueNames(boolean uniqueNames) {
+    this.uniqueNames = uniqueNames;
   }
 
   public void setTitle(String title) {

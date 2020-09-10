@@ -97,6 +97,7 @@ public class YAxis extends Axis {
   private AxisType type;
   private ArrayList<TimeUnitMultiples> units;
   private Boolean visible;
+  private boolean uniqueNames;
 
   @JsonSerialize(using = SizeSerializer.class)
   private String height;
@@ -1389,5 +1390,13 @@ public class YAxis extends Axis {
    */
   public void removeStop(Stop stop) {
     this.stops.remove(stop);
+  }
+
+  public boolean getUniqueNames() {
+    return uniqueNames;
+  }
+
+  public void setUniqueNames(boolean uniqueNames) {
+    this.uniqueNames = uniqueNames;
   }
 }
